@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../assets/admin/vendors/feather/feather.css">
+  <link rel="stylesheet" href="../../assets/admin/vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="../../assets/admin/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../assets/admin/css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../assets/admin/images/favicon.png" />
+  <link rel="stylesheet" href="../../vendor/sweetalert/sweetalert2.css">
+  <style>
+    .form-check {
+        display: inline-block; /* Membuat elemen form-check menjadi inline-block */
+        margin-right: 15px; /* Memberikan margin antara elemen-elemen form-check */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <?= $navbar;?>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:../../partials/_settings-panel.html -->
+      <div class="theme-setting-wrapper">
+        <div id="settings-trigger"><i class="ti-settings"></i></div>
+        <div id="theme-settings" class="settings-panel">
+          <i class="settings-close ti-close"></i>
+          <p class="settings-heading">SIDEBAR SKINS</p>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>Light</div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark</div>
+          <p class="settings-heading mt-2">HEADER SKINS</p>
+          <div class="color-tiles mx-0 px-4">
+            <div class="tiles success"></div>
+            <div class="tiles warning"></div>
+            <div class="tiles danger"></div>
+            <div class="tiles info"></div>
+            <div class="tiles dark"></div>
+            <div class="tiles default"></div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- partial -->
+      <!-- partial:../../partials/_sidebar.html -->
+      <?= $sidebar; ?>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+          <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Form Edit Data menu Restoran</h4>
+                  <form class="forms-sample" action="<?= base_url('Menu/update_menu')?>" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <label for="nama">Nama menu</label>
+                      <input type="hidden" class="form-control" name="id_restoran" value="<?= $data->id_restoran?>">
+                      <input type="hidden" class="form-control" name="id" value="<?= $data->id_menu?>">
+                      <input type="text" class="form-control" name="nama" value="<?= $data->nama_menu?>">
+                    </div>
+                    
+                    <!-- radio button -->
+                    <div class="form-group">
+                        <label>Pilih Tipe Penginapan</label>
+                        <div class="form-group">
+                          <div class="form-check">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="tipe" id="optionsRadios1" value="makanan" <?= ($data->jenis_menu == "makanan")?"checked":""?>>
+                              Makanan
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <label class="form-check-label">
+                              <input type="radio" class="form-check-input" name="tipe" id="optionsRadios1" Value="minuman" <?= ($data->jenis_menu == "minuman")?"checked":""?>>
+                              Minuman
+                            </label>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="peta">Harga menu</label>
+                      <input type="number" class="form-control" name="harga" value="<?= $data->harga_menu?>">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Upload Gambar Menu Baru</label>
+                      <input type="file" name="img" class="file-upload-default" accept="image/jpeg, image/png, image/jpg">
+                      <div class="input-group col-xs-12">
+                        <input type="text" class="form-control file-upload-info" readonly placeholder="Upload Image Baru">
+                        <span class="input-group-append">
+                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                        </span>
+                      </div>
+                    </div>
+                    <label>Gambar Menu Yang Sudah Dimasukkan</label>
+                    
+                    <div class="form-group">
+                      <div class="input-group col-xs-12">
+                        <input type="text" class="form-control file-upload-info" readonly  value="<?= $data->gambar_menu?>">
+                        <span class="input-group-append">
+                          <button class="btn btn-info lihat-button" type="button" data-gambar="<?= base_url('menu/' . $data->gambar_menu) ?>">Lihat</button>
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="exampleTextarea1">Deskripsi</label>
+                      <textarea class="form-control" id="exampleTextarea1" name="des" rows="4"><?= $data->deskripsi?></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+
+
+
+  
+  <script src="../../vendor/sweetalert/sweetalert2.all.js"></script>
+  <script>
+    // Event listener untuk button "Lihat"
+    document.querySelectorAll('.lihat-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const gambar = this.getAttribute('data-gambar');
+            lihatGambar(gambar);
+        });
+    });
+        // Fungsi untuk membuka gambar di jendela baru
+        function lihatGambar(gambar) {
+            window.open(gambar, "_blank");
+        }
+    
+   
+
+  </script>
+  <!-- plugins:js -->
+  <script src="../../assets/admin/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="../../assets/admin/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+  <script src="../../assets/admin/vendors/select2/select2.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="../../assets/admin/js/off-canvas.js"></script>
+  <script src="../../assets/admin/js/hoverable-collapse.js"></script>
+  <script src="../../assets/admin/js/template.js"></script>
+  <script src="../../assets/admin/js/settings.js"></script>
+  <script src="../../assets/admin/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../../assets/admin/js/file-upload.js"></script>
+  <script src="../../assets/admin/js/typeahead.js"></script>
+  <script src="../../assets/admin/js/select2.js"></script>
+  <!-- End custom js for this page-->
+</body>
+
+</html>
