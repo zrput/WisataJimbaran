@@ -21,10 +21,11 @@
   <!-- endinject -->
   <!-- <link rel="shortcut icon" href="images/favicon.png" /> -->
 </head>
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
-    <?= $navbar;?>
+    <?= $navbar; ?>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
@@ -33,8 +34,12 @@
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
           <p class="settings-heading">SIDEBAR SKINS</p>
-          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>Light</div>
-          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark</div>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme">
+            <div class="img-ss rounded-circle bg-light border mr-3"></div>Light
+          </div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme">
+            <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
+          </div>
           <p class="settings-heading mt-2">HEADER SKINS</p>
           <div class="color-tiles mx-0 px-4">
             <div class="tiles success"></div>
@@ -56,17 +61,17 @@
             <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
           </li>
         </ul>
-        
+
       </div>
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
 
-      <?= $sidebar;?>
-      
+      <?= $sidebar; ?>
+
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          
+
           <div class="row">
             <!-- <div class="col-md-6 grid-margin stretch-card">
               <div class="card tale-bg">
@@ -87,51 +92,50 @@
               </div>
             </div> -->
             <div class="col-md-12 grid-margin transparent">
-              <div class="row">
-                <div class="col-md-3 mb-5 stretch-card transparent" onclick="objek()">
-                  <div class="card card-tale">
-                    <div class="card-body">
-                      <p class="mb-4">Objek Wisata</p>
-                      <p class="fs-30 mb-2"><?=$objek?></p>
-                    </div>
+              <div <div class="col-md-3 mb-5 stretch-card transparent" onclick="objek()">
+                <div class="card card-tale">
+                  <div class="card-body">
+                    <p class="mb-4">Objek Wisata</p>
+                    <p class="fs-30 mb-2"><?= $objek ?></p>
                   </div>
                 </div>
-                <div class="col-md-3 mb-5 stretch-card transparent" onclick="rekreasi()">
+              </div>
+
+              <div class="col-md-3 mb-5 stretch-card transparent" onclick="rekreasi()">
                 <div class="card card-dark-blue">
-                    <div class="card-body">
-                      <p class="mb-4">Tempat Rekreasi wisata</p>
-                      <p class="fs-30 mb-2"><?=$rekreasi?></p>
-                      
-                    </div>
+                  <div class="card-body">
+                    <p class="mb-4">Tempat Rekreasi wisata</p>
+                    <p class="fs-30 mb-2"><?= $rekreasi ?></p>
                   </div>
                 </div>
-              
-                <div class="col-md-3 mb-5 stretch-card transparent" onclick="penginapan()">
-                  <div class="card card-light-blue">
-                    <div class="card-body">
-                      <p class="mb-4">Akomodasi Penginapan</p>
-                      <p class="fs-30 mb-2"><?=$akomodasi?></p>
-                      
-                    </div>
+              </div>
+
+              <div class="col-md-3 mb-5 stretch-card transparent" onclick="penginapan()">
+                <div class="card card-light-blue">
+                  <div class="card-body">
+                    <p class="mb-4">Akomodasi Penginapan</p>
+                    <p class="fs-30 mb-2"><?= $akomodasi ?></p>
                   </div>
                 </div>
-                <div class="col-md-3 mb-5 stretch-card transparent" onclick="restoran()">
-                  <div class="card card-light-danger">
-                    <div class="card-body">
-                      <p class="mb-4">Restoran</p>
-                      <p class="fs-30 mb-2"><?=$restoran?></p>
-                      
-                    </div>
+              </div>
+
+              <div class="col-md-3 mb-5 stretch-card transparent" onclick="restoran()">
+                <div class="card card-light-danger">
+                  <div class="card-body">
+                    <p class="mb-4">Restoran</p>
+                    <p class="fs-30 mb-2"><?= $restoran ?></p>
+
                   </div>
                 </div>
               </div>
             </div>
-          
-            <div class="col-md-12 stretch-card grid-margin">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Notifications</p>
-                  <!-- <ul class="icon-data-list">
+          </div>
+
+          <div class="col-md-12 stretch-card grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-title">Notifications</p>
+                <!-- <ul class="icon-data-list">
                     <li>
                       <div class="d-flex">
                         <img src="images/faces/face1.jpg" alt="user">
@@ -183,25 +187,25 @@
                       </div>
                     </li>
                   </ul> -->
-                </div>
               </div>
             </div>
           </div>
-          
         </div>
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-        </footer>
-        <!-- partial -->
+
       </div>
-      <!-- main-panel ends -->
+      <!-- content-wrapper ends -->
+      <!-- partial:partials/_footer.html -->
+      <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+        </div>
+      </footer>
+      <!-- partial -->
     </div>
-    <!-- page-body-wrapper ends -->
+    <!-- main-panel ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
 
@@ -229,19 +233,21 @@
 
   <script>
     function objek() {
-        window.location.href="<?= base_url('Objek_wisata/table_objek') ?>";
+      window.location.href = "<?= base_url('Objek_wisata/table_objek') ?>";
     }
+
     function rekreasi() {
-        window.location.href="<?= base_url('Aktifitas_rekreasi/table_rekreasi') ?>";
+      window.location.href = "<?= base_url('Aktifitas_rekreasi/table_rekreasi') ?>";
     }
+
     function penginapan() {
-        window.location.href="<?= base_url('Akomodasi/table_akomodasi') ?>";
+      window.location.href = "<?= base_url('Akomodasi/table_akomodasi') ?>";
     }
+
     function restoran() {
-        window.location.href="<?= base_url('Restoran/table_restoran') ?>";
+      window.location.href = "<?= base_url('Restoran/table_restoran') ?>";
     }
   </script>
 </body>
 
 </html>
-
