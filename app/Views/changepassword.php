@@ -113,7 +113,7 @@
                                 </div>
                             <?php endif; ?>
 
-                            <?php echo form_open('Auth/changepassword') ?>
+                            <?php echo form_open('Auth/changepass') ?>
                             <div class="row gy-3 overflow-hidden">
                                 <div class="col-12">
                                     <div class="form-floating mb-3">

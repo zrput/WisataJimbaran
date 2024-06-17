@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Muser;
 use Google_Client;
 use CodeIgniter\Email\Email;
 
@@ -280,7 +281,7 @@ class Auth extends BaseController
         }
     }
 
-    public function changepassword()
+    public function changepass()
     {
         if (session()->has('reset_password')) {
 
