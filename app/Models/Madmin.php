@@ -20,5 +20,23 @@ class Madmin extends Model
     public function reg_google($data){
         return $this->insert($data);
     }
+
+    public function cek_email($email){
+        return $this->db->table('user')->where([
+            'email' => $email,
+        ])->get()->getRowArray();
+    }
+
+    public function insert_token($data){
+        return $this->db->table('user_token')->insert($data);
+    }
+
+    public function get_token($email, $token){
+        return $this->db->table('user_token')->where(['email' => $email, 'token' => $token])->get()->getRowArray(); 
+    }
+
+    public function update_pass($email, $password){
+        return $this->where('email', $email)->set('password', $password)->update();
+    }
 }
 
