@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use Google_Client;
 use CodeIgniter\Email\Email;
 
@@ -25,14 +26,16 @@ class Auth extends BaseController
         return view('signup', $data);
     }
 
-    public function password(){
+    public function password()
+    {
         return view('password1');
     }
 
-    public function cek_login(){
+    public function cek_login()
+    {
 
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
             'email' => 'required|valid_email',
             'password' => 'required',
@@ -44,7 +47,7 @@ class Auth extends BaseController
             // Login the user
             $email = $this->request->getPost('email');
             $password = $this->request->getPost('password');
-            
+
             $cek = $this->Madmin->login($email, $password);
             if ($cek) {
                 session()->set('log', true);
@@ -59,17 +62,17 @@ class Auth extends BaseController
                 } else {
                     return redirect()->to(base_url('User'));
                 }
-            } else{
+            } else {
                 session()->setFlashdata('pesan', 'Login Gagal, Username atau Password salah !!');
                 return redirect()->to(base_url('Auth'));
             }
-        } 
+        }
     }
 
     public function cek_signup()
     {
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
             'username' => 'required|min_length[3]',
             'emailup' => 'required|valid_email',
@@ -91,10 +94,10 @@ class Auth extends BaseController
                 'password' => $password,
                 'role' => "member",
             ];
-            
+
             $user_data = $this->Madmin->reg_google($data);
             $cek = $this->Madmin->login($email, $password);
-            
+
             if ($cek) {
                 session()->set('log', true);
                 session()->set('id', $cek['id']);
@@ -107,35 +110,56 @@ class Auth extends BaseController
             }
         }
     }
-    
-    public function cek_data(){ #mengambil data akun google
-        try{
+
+    public function cek_data()
+    { #mengambil data akun google
+        try {
             $token = $this->googleClient->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
-            if (!isset($token['error'])){
+            if (!isset($token['error'])) {
                 $this->googleClient->setAccessToken($token['access_token']);
                 $googleService = new \Google_Service_Oauth2($this->googleClient);
                 $data = $googleService->userinfo->get();
-                $row = [
-                    'email' => $data['email'],
-                    'username' => $data['name'],
-                    'picture' => $data['picture'],
-                ];
+
+                $userModel = new \App\Models\Muser();
+                $existingUser = $userModel->where('email', $data['email'])->first();
+
+                if ($existingUser) {
+                    $row = [
+                        'id' => $existingUser['id'],
+                        'email' => $existingUser['email'],
+                        'username' => $existingUser['username'],
+                        'picture' => $existingUser['picture'],
+                    ];
+                } else {
+                    $newUserData = [
+                        'email' => $data['email'],
+                        'username' => $data['name'],
+                        'picture' => $data['picture'],
+                        'role' => 'member',
+                    ];
+                    $userModel->insert($newUserData);
+                    $insertedUser = $userModel->where('email', $data['email'])->first();
+                    $row = [
+                        'id' => $insertedUser['id'],
+                        'email' => $insertedUser['email'],
+                        'username' => $insertedUser['username'],
+                        'picture' => $insertedUser['picture'],
+                    ];
+                }
                 session()->set($row);
                 return redirect()->to(base_url('Auth/password'));
-                
-            }else {
-                // Handle error if needed
+            } else {
                 return redirect()->to(base_url('Auth'))->with('error', 'gagal menguhubungkan ke akun google.');
             }
-        }catch (\Exception $e) {
-            // Handle exception if needed
+        } catch (\Exception $e) {
             return redirect()->to(base_url('Auth'))->with('error', 'error pada saat mengakses autentikasi.');
         }
     }
 
-    public function insert_pass() {
+    public function insert_pass()
+    {
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
             'password' => 'required|min_length[5]',
         ]);
@@ -147,7 +171,7 @@ class Auth extends BaseController
             $username = $this->request->getPost('username');
             $picture = $this->request->getPost('picture');
             $password = $this->request->getPost('password');
-            
+
             $data = [
                 'email' => $email,
                 'username' => $username,
@@ -155,16 +179,15 @@ class Auth extends BaseController
                 'password' => $password,
                 'role' => "member",
             ];
-            
+
             $this->Madmin->reg_google($data);
             session()->setFlashdata('pesan', 'Daftar Akun Berhasil....!');
             return redirect()->to(base_url('Auth'));
-
         }
-        
     }
 
-    public function logout(){
+    public function logout()
+    {
         session()->remove('log');
         session()->remove('username');
         session()->remove('email');
@@ -174,13 +197,15 @@ class Auth extends BaseController
     }
 
     #password
-    public function forgot_password(){
+    public function forgot_password()
+    {
         return view('forgot');
     }
 
-    public function cek_forgot(){
+    public function cek_forgot()
+    {
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
             'email' => 'required|valid_email',
         ]);
@@ -190,7 +215,7 @@ class Auth extends BaseController
         } else {
             $email = $this->request->getPost('email');
             $cek = $this->Madmin->cek_email($email);
-            if ($cek){
+            if ($cek) {
                 $token = base64_encode(random_bytes(32));
 
                 $data = [
@@ -200,39 +225,37 @@ class Auth extends BaseController
                 ];
 
                 $insert_token = $this->Madmin->insert_token($data);
-                if ($insert_token){                
-                    
+                if ($insert_token) {
+
                     $sendEmail = $this->_sendEmail($token, $email);
 
-                    if ($sendEmail){
+                    if ($sendEmail) {
                         session()->setFlashdata('pesan', 'Reset Password sudah terkirim, periksa email!!');
                         return redirect()->to(base_url('Auth/forgot_password'));
-                    }else {
+                    } else {
                         session()->setFlashdata('pesan', 'Gagal Mengirim!!');
                         return redirect()->to(base_url('Auth/forgot_password'));
                     }
-
-                }else{
+                } else {
                     session()->setFlashdata('pesan', 'Error 500!!');
                     return redirect()->to(base_url('Auth/forgot_password'));
                 }
-
-            }else{
+            } else {
                 session()->setFlashdata('pesan', 'Email Tidak Ditemukan, Periksa Kembali!!');
                 return redirect()->to(base_url('Auth/forgot_password'));
             }
-
         }
     }
 
-    private function _sendEmail($token, $userEmail){
+    private function _sendEmail($token, $userEmail)
+    {
         $email = \Config\Services::email();
 
         $email->setFrom('halodunia660@gmail.com', 'WisataJimbarans');
         $email->setTo($userEmail);
 
         $email->setSubject('Reset Password');
-        $email->setMessage('Click this link to reset your password: <a href="' . base_url(). 'Auth/resetpassword?email=' . $userEmail . '&token=' . urlencode($token) . '">Reset Password</a>');
+        $email->setMessage('Click this link to reset your password: <a href="' . base_url() . 'Auth/resetpassword?email=' . $userEmail . '&token=' . urlencode($token) . '">Reset Password</a>');
 
         if ($email->send()) {
             return true;
@@ -242,25 +265,27 @@ class Auth extends BaseController
         }
     }
 
-    public function resetpassword(){
+    public function resetpassword()
+    {
         $email = $this->request->getGet('email');
         $token = $this->request->getGet('token');
 
         $user = $this->Madmin->get_token($email, $token);
-        if(str_replace(' ', '+', $user['token']) == $token){
+        if (str_replace(' ', '+', $user['token']) == $token) {
             session()->set('reset_password', $email);
             return view('changepassword');
-        }else{
+        } else {
             session()->setFlashdata('pesan', 'Reset Password Gagal, Token salah !!');
             return redirect()->to(base_url('Auth'));
         }
     }
 
-    public function changepassword(){
-        if (session()->has('reset_password')){
+    public function changepassword()
+    {
+        if (session()->has('reset_password')) {
 
             $validation = \Config\Services::validation();
-            
+
             $validation->setRules([
                 'password' => 'required|min_length[5]',
                 'confirm-password' => 'required|matches[password]'
@@ -272,24 +297,127 @@ class Auth extends BaseController
                 $email = session()->get('reset_password');
                 $password = $this->request->getPost('password');
                 $up_pass = $this->Madmin->update_pass($email, $password);
-                if ($up_pass){
+                if ($up_pass) {
                     session()->setFlashdata('pesan', 'Reset Password sukses !!');
                     return redirect()->to(base_url('Auth'));
-                }else{
+                } else {
                     session()->setFlashdata('pesan', 'Reset Password gagal !!');
                     return redirect()->to(base_url('Auth'));
                 }
             }
-        }else{
+        } else {
             session()->setFlashdata('pesan', 'Terjadi Kesalahan !!');
             return redirect()->to(base_url('Auth'));
         }
     }
 
+    // function to update profile
+    public function updateProfile()
+    {
+        $session = session();
+        $userId = $session->get('id'); // Assuming user ID is stored in session
 
-    
+        $userData = [
+            'username' => $this->request->getPost('username'),
+            'email' => $this->request->getPost('email')
+        ];
 
+        // Handle profile picture upload
+        $profilePicture = $this->request->getFile('profilePicture');
+        if ($profilePicture->isValid() && !$profilePicture->hasMoved()) {
+            // Validate the file type
+            $validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (in_array($profilePicture->getMimeType(), $validFileTypes)) {
+                $profilePictureName = $profilePicture->getRandomName();
+                $profilePicture->move(ROOTPATH . 'public/uploads/profile_pictures', $profilePictureName);
+                $userData['picture'] = $profilePictureName;
 
+                // Update session picture
+                $session->set('picture', $profilePictureName);
+            } else {
+                return redirect()->to(base_url('auth/profileSettings'))->with('error', 'Invalid file type. Only JPEG and PNG are allowed.');
+            }
+        }
 
-    
+        $userModel = new Muser();
+        if ($userModel->update($userId, $userData)) {
+            return redirect()->to(base_url('auth/profileSettings'))->with('success', 'Profile updated successfully.');
+        } else {
+            return redirect()->to(base_url('auth/profileSettings'))->with('error', 'Failed to update profile.');
+        }
+    }
+    // function to load password confirmation form
+    public function confirmPassword()
+    {
+        // Load the view for password confirmation form
+        return view('user/confirm_password');
+    }
+
+    public function verifyPassword()
+    {
+        $session = session();
+        $userId = $session->get('id');
+        $oldPassword = $this->request->getPost('oldPassword');
+
+        // Log received data
+        log_message('debug', 'User ID: ' . $userId);
+        log_message('debug', 'Old Password Input: ' . $oldPassword);
+
+        // Validate old password
+        $userModel = new Muser();
+        $user = $userModel->find($userId);
+
+        if ($user) {
+            // Log retrieved user data
+            log_message('debug', 'Stored User Data: ' . json_encode($user));
+
+            // Compare plain text passwords
+            if ($oldPassword === $user['password']) {
+                // Old password is correct, redirect to change password form
+                session()->set('password_verified', true);
+                return redirect()->to(base_url('auth/changePassword'));
+            } else {
+                // Log password verification failure
+                log_message('error', 'Password verification error: Password verification failed.');
+                return redirect()->to(base_url('auth/confirmPassword'))->with('error', 'Incorrect old password.');
+            }
+        } else {
+            // Log user retrieval failure
+            log_message('error', 'Password verification error: User not found.');
+            return redirect()->to(base_url('auth/confirmPassword'))->with('error', 'User not found.');
+        }
+    }
+
+    public function changePassword()
+    {
+        if (!session()->get('password_verified')) {
+            return redirect()->to(base_url('auth/confirmPassword'))->with('error', 'Please confirm your password first.');
+        }
+
+        return view('user/change_password');
+    }
+
+    public function updatePassword()
+    {
+        if (!session()->get('password_verified')) {
+            return redirect()->to(base_url('auth/confirmPassword'))->with('error', 'Please confirm your password first.');
+        }
+
+        $session = session();
+        $userId = $session->get('id');
+        $newPassword = $this->request->getPost('newPassword');
+        $confirmPassword = $this->request->getPost('confirmPassword');
+
+        if ($newPassword !== $confirmPassword) {
+            return redirect()->to(base_url('auth/changePassword'))->with('error', 'Passwords do not match.');
+        }
+
+        $userModel = new Muser();
+        // Store the plain text password
+        $userModel->update($userId, ['password' => $newPassword]);
+
+        // Clear password verified session
+        session()->remove('password_verified');
+        return redirect()->to(base_url('auth/profileSettings'))->with('success', 'Password updated successfully.');
+    }
 }
