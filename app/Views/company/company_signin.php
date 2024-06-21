@@ -48,7 +48,7 @@
             left: 15px;
         }
     </style>
-    <title>Login</title>
+    <title>Signin Company</title>
 </head>
 
 <body>
@@ -69,17 +69,17 @@
                                                 <img src="../assets/scale.png" alt="Logo" width="130" height="120">
                                             </a>
                                         </div>
-                                        <h4 class="text-center">Welcome</h4>
+                                        <h4 class="text-center">Signin Company</h4>
                                     </div>
                                 </div>
                             </div>
                             <!-- Nav Pills -->
                             <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link <?= session('tab') == 'login' ? 'active' : '' ?>" id="pills-login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login" aria-selected="<?= session('tab') == 'login' ? 'true' : 'false' ?>">Login</button>
+                                    <button class="nav-link <?= session('tab') == 'login' ? 'active' : '' ?>" id="pills-login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login" aria-selected="<?= session('tab') == 'login' ? 'true' : 'false' ?>">Akomodasi</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link <?= session('tab') == 'signup' ? 'active' : '' ?>" id="pills-signup-tab" data-bs-toggle="pill" data-bs-target="#pills-signup" type="button" role="tab" aria-controls="pills-signup" aria-selected="<?= session('tab') == 'signup' ? 'true' : 'false' ?>">Sign Up</button>
+                                    <button class="nav-link <?= session('tab') == 'signup' ? 'active' : '' ?>" id="pills-signup-tab" data-bs-toggle="pill" data-bs-target="#pills-signup" type="button" role="tab" aria-controls="pills-signup" aria-selected="<?= session('tab') == 'signup' ? 'true' : 'false' ?>">Restoran</button>
                                 </li>
                             </ul>
                             <?php if (session()->getFlashdata('pesan')) : ?>
@@ -91,53 +91,89 @@
                                 </div>
                             <?php endif; ?>
                             <div class="tab-content" id="pills-tabContent">
-                                <!-- Login Form -->
+                                <!-- restoran Form -->
                                 <div class="tab-pane fade <?= session('tab') == 'login' ? 'show active' : '' ?>" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-                                    <?= form_open('Auth/cek_login') ?>
+                                    <?= form_open('Auth/cek_akomodasi'); ?>
                                     <div class="row gy-3 overflow-hidden">
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
-                                                <input type="email" class="form-control <?= session('errors.email') ? 'is-invalid' : '' ?>" name="email" id="email" placeholder="name@example.com" value="<?= set_value('email'); ?>">
-                                                <label for="email" class="form-label" name="email">Email</label>
-                                                <?php if (session('errors.email')) : ?>
+                                                <input type="hidden" name="role" value="akomodasi">
+                                                <input type="text" class="form-control <?= session('errors.re_username') ? 'is-invalid' : ''; ?>" name="re_username" id="username" placeholder="Username" value="<?= set_value('re_username'); ?>">
+                                                <label for="username" class="form-label">Username</label>
+                                                <?php if (session('errors.re_username')) : ?>
                                                     <div class="invalid-feedback">
-                                                        <?= session('errors.email'); ?>
+                                                        <?= session('errors.re_username'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
-                                                <input type="password" class="form-control <?= session('errors.password') ? 'is-invalid' : '' ?>" name="password" id="password" placeholder="Password">
-                                                <label for="password" class="form-label" name="password">Password</label>
-                                                <?php if (session('errors.password')) : ?>
+                                                <input type="email" class="form-control <?= session('errors.re_email') ? 'is-invalid' : ''; ?>" name="re_email" id="email-signup" placeholder="name@example.com" value="<?= set_value('re_emailup'); ?>">
+                                                <label for="email-signup" class="form-label">Email</label>
+                                                <?php if (session('errors.re_email')) : ?>
                                                     <div class="invalid-feedback">
-                                                        <?= session('errors.password'); ?>
+                                                        <?= session('errors.re_email'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="password" class="form-control <?= session('errors.re_password') ? 'is-invalid' : ''; ?>" name="re_passwordup" id="password-signup" placeholder="Password">
+                                                <label for="password-signup" class="form-label">Password</label>
+                                                <?php if (session('errors.re_password')) : ?>
+                                                    <div class="invalid-feedback">
+                                                        <?= session('errors.re_password'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="password" class="form-control <?= session('errors.re_confirm-password') ? 'is-invalid' : ''; ?>" name="re_confirm-password" id="confirm-password" placeholder="Confirm Password">
+                                                <label for="confirm-password" class="form-label">Confirm Password</label>
+                                                <?php if (session('errors.re_confirm-password')) : ?>
+                                                    <div class="invalid-feedback">
+                                                        <?= session('errors.re_confirm-password'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="d-grid">
-                                                <button class="btn bsb-btn-xl btn-primary" type="submit">Log in</button>
+                                                <button class="btn bsb-btn-xl btn-primary" type="submit">Sign Up</button>
                                             </div>
                                         </div>
                                     </div>
                                     <?= form_close(); ?>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <hr class="mt-5 mb-4 border-secondary-subtle">
-                                            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                                                <a href="#!" class="link-secondary text-decoration-none" id="create-new-account">Create new account</a>
-                                                <a href="<?= base_url('Auth/forgot_password') ?>" class="link-secondary text-decoration-none">Forgot password</a>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <!-- Sign Up Form -->
                                 <div class="tab-pane fade <?= session('tab') == 'signup' ? 'show active' : '' ?>" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
                                     <?= form_open('Auth/cek_signup'); ?>
                                     <div class="row gy-3 overflow-hidden">
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control <?= session('errors.username') ? 'is-invalid' : ''; ?>" name="username" id="username" placeholder="Username" value="<?= set_value('username'); ?>">
+                                                <label for="username" class="form-label">Username</label>
+                                                <?php if (session('errors.username')) : ?>
+                                                    <div class="invalid-feedback">
+                                                        <?= session('errors.username'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control <?= session('errors.username') ? 'is-invalid' : ''; ?>" name="username" id="username" placeholder="Username" value="<?= set_value('username'); ?>">
+                                                <label for="username" class="form-label">Username</label>
+                                                <?php if (session('errors.username')) : ?>
+                                                    <div class="invalid-feedback">
+                                                        <?= session('errors.username'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control <?= session('errors.username') ? 'is-invalid' : ''; ?>" name="username" id="username" placeholder="Username" value="<?= set_value('username'); ?>">
@@ -183,48 +219,12 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="form-floating mb-3">
-                                                <select class="form-select <?= session('errors.status') ? 'is-invalid' : ''; ?>" name="status" id="dropdownSelect">
-                                                    <option selected disabled>Pilih salah satu</option>
-                                                    <option value="member">Member</option>
-                                                    <option value="akomodasi">Akomodasi</option>
-                                                    <option value="restoran">Restoran</option>
-                                                </select>
-                                                <label for="dropdownSelect" class="form-label">Pilih Status</label>
-                                                <?php if (session('errors.status')) : ?>
-                                                    <div class="invalid-feedback">
-                                                        <?= session('errors.status'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
                                             <div class="d-grid">
                                                 <button class="btn bsb-btn-xl btn-primary" type="submit">Sign Up</button>
                                             </div>
                                         </div>
                                     </div>
                                     <?= form_close(); ?>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <hr class="mt-5 mb-4 border-secondary-subtle">
-                                            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                                                <a href="#!" class="link-secondary text-decoration-none" id="already-account-link">Already have an account?</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p class="mt-5 mb-5">Or sign up with</p>
-                                            <div class="d-flex gap-2 gap-sm-3 justify-content-center">
-                                                <a href="<?= $link ?>" class="btn btn-lg btn-outline-danger p-3 lh-1">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-                                                        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

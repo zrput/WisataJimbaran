@@ -78,7 +78,8 @@ class Auth extends BaseController
             'username' => 'required|min_length[3]',
             'emailup' => 'required|valid_email',
             'passwordup' => 'required|min_length[5]',
-            'confirm-password' => 'required|matches[passwordup]'
+            'confirm-password' => 'required|matches[passwordup]',
+            'status' => 'required'
         ]);
 
         if ($validation->withRequest($this->request)->run() == FALSE) {
@@ -88,12 +89,13 @@ class Auth extends BaseController
             $username = $this->request->getPost('username');
             $email = $this->request->getPost('emailup');
             $password = $this->request->getPost('passwordup');
+            $status = $this->request->getPost('status');
 
             $data = [
                 'email' => $email,
                 'username' => $username,
                 'password' => $password,
-                'role' => "member",
+                'role' => $status,
             ];
 
             $user_data = $this->Madmin->reg_google($data);
