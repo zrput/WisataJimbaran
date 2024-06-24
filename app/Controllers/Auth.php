@@ -57,9 +57,13 @@ class Auth extends BaseController
                 session()->set('email', $cek['email']);
                 session()->set('picture', $cek['picture']);
                 session()->set('role', $cek['role']);
+                session()->set('no_tlp', $cek['no_tlp']);
+                session()->set('rek', $cek['rek']);
 
                 if ($cek['role'] == 'admin') {
                     return redirect()->to(base_url('Admin/dashboard'));
+                } elseif ($cek['role'] == 'akomodasi') {
+                    return redirect()->to(base_url('Main_akomodasi'));
                 } else {
                     return redirect()->to(base_url('User'));
                 }
@@ -91,28 +95,92 @@ class Auth extends BaseController
             $password = $this->request->getPost('passwordup');
             $status = $this->request->getPost('status');
 
+            $token = base64_encode(random_bytes(32));
+
             $data = [
                 'email' => $email,
                 'username' => $username,
                 'password' => $password,
                 'role' => $status,
+                'token' => $token,
+                'date_create' => time()
             ];
 
-            $user_data = $this->Madmin->reg_google($data);
-            $cek = $this->Madmin->login($email, $password);
 
-            if ($cek) {
-                session()->set('log', true);
-                session()->set('id', $cek['id']);
-                session()->set('username', $cek['username']);
-                session()->set('email', $cek['email']);
-                session()->set('picture', $cek['picture']);
-                session()->set('role', $cek['role']);
+            $insert_token = $this->Madmin->insert_pending($data);
+            if ($insert_token) {
 
-                return redirect()->to(base_url('User'));
+                $sendEmail = $this->_sendverification($token, $email);
+
+                if ($sendEmail) {
+                    session()->setFlashdata('pesan', 'Verifiaksi Akun sudah terkirim, periksa Email!!');
+                    return redirect()->to(base_url('Auth'));
+                } else {
+                    session()->setFlashdata('pesan', 'Gagal Mengirim!!');
+                    return redirect()->to(base_url('Auth'));
+                }
+            } else {
+                session()->setFlashdata('pesan', 'Error 500!!');
+                return redirect()->to(base_url('Auth'));
             }
+
+            // $user_data = $this->Madmin->reg_google($data);
+            // $cek = $this->Madmin->login($email, $password);
+
+            // if ($cek) {
+            //     session()->set('log', true);
+            //     session()->set('id', $cek['id']);
+            //     session()->set('username', $cek['username']);
+            //     session()->set('email', $cek['email']);
+            //     session()->set('picture', $cek['picture']);
+            //     session()->set('role', $cek['role']);
+
+            //     return redirect()->to(base_url('User'));
+            // }
         }
     }
+
+    public function _sendverification($token, $userEmail)
+    {
+        $email = \Config\Services::email();
+
+        $email->setFrom('halodunia660@gmail.com', 'WisataJimbarans');
+        $email->setTo($userEmail);
+
+        $email->setSubject('Verification New Account');
+        $email->setMessage('Click this link to verification your account: <a href="' . base_url() . 'Auth/verification?email=' . $userEmail . '&token=' . urlencode($token) . '">Verification</a>');
+
+        if ($email->send()) {
+            return true;
+        } else {
+            $data = $email->printDebugger(['headers']);
+            print_r($data);
+        }
+    }
+
+    public function verification()
+    {
+        $email = $this->request->getGet('email');
+        $token = $this->request->getGet('token');
+
+        $user = $this->Madmin->get_pending($email, $token);
+        if (str_replace(' ', '+', $user['token']) == $token) {
+            $insert_pending = [
+                'username' => $user['username'],
+                'email' => $user['email'],
+                'password' => $user['password'],
+                'role' => $user['role']
+            ];
+            $this->Madmin->reg_google($insert_pending);
+
+            $data['pesan'] = 'Verifikasi akun berhasil! Akun anda sudah aktif.';
+            return view('alert_verifikasi', $data);
+        } else {
+            $data['pesan'] = 'Verifikasi akun gagal! Token tidak sesuai.';
+            return view('alert_verifikasi', $data);
+        }
+    }
+
 
     public function cek_data()
     { #mengambil data akun google
