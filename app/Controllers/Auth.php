@@ -8,6 +8,7 @@ use CodeIgniter\Email\Email;
 
 class Auth extends BaseController
 {
+    protected $Madmin;
     protected $googleClient;
     public function __construct()
     {

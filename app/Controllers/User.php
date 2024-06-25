@@ -2,29 +2,36 @@
 
 namespace App\Controllers;
 
+use App\Models\ReservationRestoranModel;
+
 class User extends BaseController
 {
-    
+    protected $reservationRestoranModel;
+    protected $user_model;
     public function __construct()
     {
         $this->user_model = new \App\Models\Muser();
+        $this->reservationRestoranModel = new \App\Models\ReservationRestoranModel();
     }
-    
-    public function index(){
-        $data['header'] = view('user/header');
-        $data['footer'] = view('user/footer');
-        return view('user/landing_page', $data);
-    }
-    
 
-    public function main(){
+    public function index()
+    {
         $data['header'] = view('user/header');
         $data['footer'] = view('user/footer');
         return view('user/landing_page', $data);
     }
 
 
-    public function objek_wisata(){
+    public function main()
+    {
+        $data['header'] = view('user/header');
+        $data['footer'] = view('user/footer');
+        return view('user/landing_page', $data);
+    }
+
+
+    public function objek_wisata()
+    {
         $data['data'] = $this->user_model->data_objek();
         $data['title'] = "Objek Wisata";
         $data['header'] = view('user/header');
@@ -38,10 +45,10 @@ class User extends BaseController
             }
         }
         return view('user/objek_wisata', $data);
-
     }
 
-    public function cari_objek(){
+    public function cari_objek()
+    {
         $nama = $this->request->getPost('cari');
         $data['data'] = $this->user_model->cari_objek($nama);
         $data['title'] = "Objek Wisata";
@@ -56,10 +63,10 @@ class User extends BaseController
             }
         }
         return view('user/objek_wisata', $data);
-
     }
 
-    public function detail_objek($id, $nama){
+    public function detail_objek($id, $nama)
+    {
         $tipe = "objek";
         $data['data'] = $this->user_model->detail_objek($id, $nama);
         $data['img'] = $this->user_model->all_img_objek($id);
@@ -76,7 +83,8 @@ class User extends BaseController
         return view('user/detail_objek', $data);
     }
 
-    public function data_review(){
+    public function data_review()
+    {
         $id = $this->request->getPost('id');
         $rating = $this->request->getPost('rating');
         $komen = $this->request->getPost('komentar');
@@ -93,14 +101,14 @@ class User extends BaseController
         ];
 
         $this->user_model->komentar_objek($rating, $komen, $tipe, $id, $jenis);
-        return redirect()->to(base_url('User/detail_objek'). '/' . $jenis. '/' . $nama);
-
+        return redirect()->to(base_url('User/detail_objek') . '/' . $jenis . '/' . $nama);
     }
 
 
     //------------------------------------------------------------------------------------
 
-    public function rekreasi_wisata(){
+    public function rekreasi_wisata()
+    {
         $data['data'] = $this->user_model->data_rekreasi();
         $data['title'] = "Rekreasi Wisata";
         $data['header'] = view('user/header');
@@ -113,12 +121,12 @@ class User extends BaseController
                 $data['gambarData'][$rekreasi->id_rekreasi] = $gambarRekreasi->gambar_rekreasi;
             }
         }
-    
-        return view('user/rekreasi_wisata', $data);
 
+        return view('user/rekreasi_wisata', $data);
     }
 
-    public function cari_rekreasi(){
+    public function cari_rekreasi()
+    {
         $nama = $this->request->getPost('cari');
         $data['data'] = $this->user_model->cari_rekreasi($nama);
         $data['title'] = "Rekreasi Wisata";
@@ -133,10 +141,10 @@ class User extends BaseController
             }
         }
         return view('user/rekreasi_wisata', $data);
-
     }
 
-    public function detail_rekreasi($id, $nama){
+    public function detail_rekreasi($id, $nama)
+    {
         $tipe = "rekreasi";
         $data['data'] = $this->user_model->detail_rekreasi($id, $nama);
         $data['img'] = $this->user_model->all_img_rekreasi($id);
@@ -152,7 +160,8 @@ class User extends BaseController
         return view('user/detail_rekreasi', $data);
     }
 
-    public function data_review_rekreasi(){
+    public function data_review_rekreasi()
+    {
         $id = $this->request->getPost('id');
         $rating = $this->request->getPost('rating');
         $komen = $this->request->getPost('komentar');
@@ -169,13 +178,13 @@ class User extends BaseController
         ];
 
         $this->user_model->komentar_objek($rating, $komen, $tipe, $id, $jenis);
-        return redirect()->to(base_url('User/detail_rekreasi'). '/' . $jenis. '/' . $nama);
-
+        return redirect()->to(base_url('User/detail_rekreasi') . '/' . $jenis . '/' . $nama);
     }
 
     //------------------------------------------------------------------------------------------------
 
-    public function akomodasi_penginapan(){
+    public function akomodasi_penginapan()
+    {
         $data['data'] = $this->user_model->data_penginapan();
         $data['title'] = "Akomodasi Penginapan";
         $data['header'] = view('user/header');
@@ -191,7 +200,8 @@ class User extends BaseController
         return view('user/penginapan', $data);
     }
 
-    public function cari_penginapan(){
+    public function cari_penginapan()
+    {
         $nama = $this->request->getPost('nama');
         $tipe = $this->request->getPost('tipe');
         $data['data'] = $this->user_model->cari_penginapan($nama, $tipe);
@@ -209,7 +219,8 @@ class User extends BaseController
         return view('user/penginapan', $data);
     }
 
-    public function detail_penginapan($id, $nama){
+    public function detail_penginapan($id, $nama)
+    {
         $tipe = "penginapan";
         $data['data'] = $this->user_model->detail_penginapan($id, $nama);
         $data['img'] = $this->user_model->all_img_penginapan($id);
@@ -217,16 +228,16 @@ class User extends BaseController
         $data['komentar'] = $this->user_model->get_komentar_penginapan($id, $tipe);
         $data['fasilitas'] = $this->user_model->data_fasilitas($id);
         foreach ($data['fasilitas'] as $fasilitas_item) {
-            $data['img_fasilitas'] = $this->user_model->img_fasilitas($fasilitas_item->id_fasilitas); 
+            $data['img_fasilitas'] = $this->user_model->img_fasilitas($fasilitas_item->id_fasilitas);
         }
         $data['title'] = "Akomodasi Penginapan";
         $data['header'] = view('user/header');
         $data['footer'] = view('user/footer');
-        
+
         $data['rata'] = $this->rata_rating($data['komentar']);
         $data['bar'] = $this->count_bar($data['komentar']);
 
-        
+
         // echo "<pre>";
         // print_r ($data['bar']);
         // echo "</pre>";
@@ -234,7 +245,8 @@ class User extends BaseController
         return view('user/detail_penginapan', $data);
     }
 
-    public function data_review_penginapan(){
+    public function data_review_penginapan()
+    {
         $id = $this->request->getPost('id');
         $rating = $this->request->getPost('rating');
         $komen = $this->request->getPost('komentar');
@@ -251,13 +263,13 @@ class User extends BaseController
         ];
 
         $this->user_model->komentar_objek($rating, $komen, $tipe, $id, $jenis);
-        return redirect()->to(base_url('User/detail_penginapan'). '/' . $jenis. '/' . $nama);
-
+        return redirect()->to(base_url('User/detail_penginapan') . '/' . $jenis . '/' . $nama);
     }
 
     //------------------------------------------------------------------------------------------------
 
-    public function restoran(){
+    public function restoran()
+    {
         $data['data'] = $this->user_model->data_restoran();
         $data['title'] = "Restoran";
         $data['header'] = view('user/header');
@@ -273,7 +285,8 @@ class User extends BaseController
         return view('user/restoran', $data);
     }
 
-    public function cari_restoran(){
+    public function cari_restoran()
+    {
         $nama = $this->request->getPost('nama');
         $data['data'] = $this->user_model->cari_restoran($nama);
         $data['title'] = "Restoran";
@@ -290,7 +303,8 @@ class User extends BaseController
         return view('user/restoran', $data);
     }
 
-    public function detail_restoran($id, $nama){
+    public function detail_restoran($id, $nama)
+    {
         $tipe = "restoran";
         $data['data'] = $this->user_model->detail_restoran($id, $nama);
         $data['img'] = $this->user_model->all_img_restoran($id);
@@ -309,7 +323,8 @@ class User extends BaseController
         return view('user/detail_restoran', $data);
     }
 
-    public function data_review_restoran(){
+    public function data_review_restoran()
+    {
         $id = $this->request->getPost('id');
         $rating = $this->request->getPost('rating');
         $komen = $this->request->getPost('komentar');
@@ -326,23 +341,69 @@ class User extends BaseController
         ];
 
         $this->user_model->komentar_objek($rating, $komen, $tipe, $id, $jenis);
-        return redirect()->to(base_url('User/detail_restoran'). '/' . $jenis. '/' . $nama);
-
+        return redirect()->to(base_url('User/detail_restoran') . '/' . $jenis . '/' . $nama);
     }
 
+    public function reserve_table()
+    {
+        // Ensure the user is logged in
+        if (!session()->has('id')) {
+            return redirect()->to(base_url('Auth')); // Redirect to login page if user is not logged in
+        }
+
+        // Get user ID from session
+        $userId = session()->get('id');
+
+        // Retrieve form data
+        $nama = $this->request->getPost('nama');
+        $email = $this->request->getPost('email');
+        $nomortelepon = $this->request->getPost('nomortelepon');
+        $tanggal = $this->request->getPost('tanggal');
+        $jam = $this->request->getPost('jam');
+        $jumlahorang = $this->request->getPost('jumlahorang'); // Note: Ensure consistency with form input name
+        $catatan = $this->request->getPost('catatan');
+
+        // Prepare data for insertion
+        $data = [
+            'nama' => $nama,
+            'email' => $email,
+            'nomortelepon' => $nomortelepon,
+            'tanggal' => $tanggal,
+            'jam' => $jam,
+            'jumlahorang' => $jumlahorang,
+            'catatan' => $catatan,
+            'user_id' => $userId // Associate reservation with the current user ID
+        ];
+
+        // Insert into database using ReservationModel
+        $inserted = $this->reservationRestoranModel->insert_reservation($data);
+
+        if ($inserted) {
+            // Optionally, you can redirect to a success page
+            return redirect()->to(base_url('user/reserve_table_success'));
+        } else {
+            // Handle insertion failure (e.g., redirect back with error message)
+            return redirect()->back()->withInput()->with('error', 'Failed to make reservation. Please try again.');
+        }
+    }
+    public function reserve_table_success()
+    {
+        return view('user/reservation_table_success');
+    }
 
     #--------------------------------------------------------------------------------------------------------------------
     #global function
-    public function rata_rating($rating){
+    public function rata_rating($rating)
+    {
         $totalrating = 0;
         $n = 0;
 
         foreach ($rating as $item) {
-             $totalrating += $item->rating;
-             $n++;
+            $totalrating += $item->rating;
+            $n++;
         }
 
-        if ($n > 0 ){
+        if ($n > 0) {
             $rata = $totalrating / $n;
         } else {
             $rata = 0;
@@ -351,22 +412,23 @@ class User extends BaseController
         return $format_rata;
     }
 
-    public function count_bar($rating){
+    public function count_bar($rating)
+    {
         $stara = 0;
         $starb = 0;
         $starc = 0;
         $stard = 0;
         $stare = 0;
         foreach ($rating as $count) {
-            if ($count->rating == 5){
+            if ($count->rating == 5) {
                 $stara += 1;
-            }elseif ($count->rating == 4){
+            } elseif ($count->rating == 4) {
                 $starb += 1;
-            }elseif ($count->rating == 3){
+            } elseif ($count->rating == 3) {
                 $starc += 1;
-            }elseif ($count->rating == 2){
+            } elseif ($count->rating == 2) {
                 $stard += 1;
-            }elseif ($count->rating == 1){
+            } elseif ($count->rating == 1) {
                 $stare += 1;
             }
         }
@@ -381,5 +443,25 @@ class User extends BaseController
         return $result;
     }
 
+    public function pesanan()
+    {
+        // Fetch all reservations from the database
+        $data['reservasi_restoran'] = $this->reservationRestoranModel->findAll();
 
+        // Load views with header, footer, and main content
+        $data['header'] = view('user/header');
+        $data['footer'] = view('user/footer');
+        return view('user/pesanan', $data);
+    }
+
+    public function cancelReservation($reservationId)
+    {
+        $result = $this->reservationRestoranModel->cancelReservation($reservationId);
+
+        if ($result) {
+            return redirect()->to(base_url('user/pesanan'))->with('success', 'Reservation canceled successfully.');
+        } else {
+            return redirect()->to(base_url('user/pesanan'))->with('error', 'Failed to cancel reservation. Please try again.');
+        }
+    }
 }

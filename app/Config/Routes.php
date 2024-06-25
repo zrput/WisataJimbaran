@@ -19,3 +19,5 @@ $routes->get('auth/profileSettings', 'Auth::profileSettings');
 $routes->post('auth/updateProfile', 'Auth::updateProfile');
 $routes->get('auth/confirmPassword', 'Auth::confirmPassword');
 $routes->post('auth/verifyPassword', 'Auth::verifyPassword');
+$routes->get('user/pesanan', 'User::pesanan');
+$routes->get('user/cancelReservation/(:num)', 'User::cancelReservation/$1');

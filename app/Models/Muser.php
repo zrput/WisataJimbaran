@@ -218,4 +218,12 @@ class Muser extends Model
             ->where('review.jenis', $id)->where('review.tipe', $tipe)
             ->orderBy('review.id_review', 'DESC')->get()->getResult();
     }
+
+    // Method to insert reservation into reservasi_restoran table
+    public function insert_reservation($data)
+    {
+        // Ensure only allowed fields are inserted into the table
+        $reservationModel = new ReservationRestoranModel();
+        return $reservationModel->insert($data);
+    }
 }

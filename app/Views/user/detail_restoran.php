@@ -282,6 +282,87 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div>
+                            <?php if (session('username') && session('role') === 'member') : ?>
+                                <!-- Content accessible to logged-in users with role 'member' -->
+                                <button id="reserveButton" class="btn btn-primary btn-lg btn-block font-weight-bold" data-toggle="modal" data-target="#reserveModal" style="margin: 0 auto; display: block; width: auto;">Ajukan Reservasi Meja</button>
+                            <?php else : ?>
+                                <div class="alert alert-warning" role="alert">
+                                    Jika ingin menggunakan fitur reservasi meja, wajib login terlebih dahulu.
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="reserveModal" tabindex="-1" role="dialog" aria-labelledby="reserveModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="reserveModalLabel">Reserve A Table</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="reservationForm" action="<?= site_url('User/reserve_table'); ?>" method="post">
+                                            <div class="form-group">
+                                                <label for="nama">Nama</label>
+                                                <input type="text" id="nama" name="nama" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" id="email" name="email" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nomortelepon">Nomor Telepon</label>
+                                                <input type="text" id="nomortelepon" name="nomortelepon" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tanggal">Tanggal</label>
+                                                <input type="date" id="tanggal" name="tanggal" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="jam">Jam</label>
+                                                <input type="time" id="jam" name="jam" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="jumlahorang">Jumlah Orang</label>
+                                                <input type="number" id="jumlahorang" name="jumlahorang" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="catatan">Catatan Khusus</label>
+                                                <textarea id="catatan" name="catatan" class="form-control" rows="3"></textarea>
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-primary mr-3" id="ajukanButton">Ajukan</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Summary Modal -->
+                        <div class="modal fade" id="summaryModal" tabindex="-1" role="dialog" aria-labelledby="summaryModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="summaryModalLabel">Reservation Summary</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" id="summaryModalBody">
+                                        <!-- Summary content will be inserted here -->
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="property-map">
                             <h4>Lokasi Berdasarkan Map</h4>
                             <div class="map-inside">
@@ -445,6 +526,16 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
 
+        <script>
+            document.getElementById("reserveButton").addEventListener("click", function() {
+                var form = document.getElementById("reserveForm");
+                if (form.style.display === "none" || form.style.display === "") {
+                    form.style.display = "block";
+                } else {
+                    form.style.display = "none";
+                }
+            });
+        </script>
 
         <script>
             // Optional: Add this script if you want to display the selected rating in a tooltip
@@ -489,6 +580,38 @@
                 $('.carousel').carousel();
             });
         </script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#ajukanButton').click(function() {
+                    // Fetch input values
+                    var nama = $('#nama').val();
+                    var email = $('#email').val();
+                    var nomortelepon = $('#nomortelepon').val();
+                    var tanggal = $('#tanggal').val();
+                    var jam = $('#jam').val();
+                    var jumlahorang = $('#jumlahorang').val();
+                    var catatan = $('#catatan').val();
+
+                    // Construct summary message
+                    var summary = "<strong>Nama:</strong> " + nama + "<br>" +
+                        "<strong>Email:</strong> " + email + "<br>" +
+                        "<strong>Nomor Telepon:</strong> " + nomortelepon + "<br>" +
+                        "<strong>Tanggal:</strong> " + tanggal + "<br>" +
+                        "<strong>Jam:</strong> " + jam + "<br>" +
+                        "<strong>Jumlah Orang:</strong> " + jumlahorang + "<br>" +
+                        "<strong>Catatan:</strong> " + catatan;
+
+                    // Display summary in summary modal body
+                    $('#summaryModalBody').html(summary);
+
+                    // Show the summary modal
+                    $('#summaryModal').modal('show');
+                });
+            });
+        </script>
+
 
 </body>
 
