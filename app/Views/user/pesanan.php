@@ -150,12 +150,18 @@
                                     <?= $reservation['status']; ?>
                                 </td>
                                 <td class="action-buttons">
+                                    <!-- Cancel Button -->
                                     <?php if ($reservation['status'] == 'Sedang Diproses' || $reservation['status'] == 'Berhasil') : ?>
                                         <form action="<?= base_url('user/cancelReservation/' . $reservation['id']); ?>" method="post">
                                             <button type="submit" class="btn btn-danger">Cancel Reservation</button>
                                         </form>
-                                    <?php else : ?>
-                                        <span><?= $reservation['status']; ?></span>
+                                    <?php endif; ?>
+                                    <br> <!-- Add line break for spacing -->
+                                    <!-- Delete Button -->
+                                    <?php if ($reservation['status'] == 'Dibatalkan' || $reservation['status'] == 'Berhasil') : ?>
+                                        <form action="<?= base_url('user/deleteReservation/' . $reservation['id']); ?>" method="post">
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this reservation?')">Delete</button>
+                                        </form>
                                     <?php endif; ?>
                                 </td>
                             </tr>

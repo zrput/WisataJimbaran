@@ -426,6 +426,29 @@ class User extends BaseController
         return view('user/reservation_table_success');
     }
 
+    public function deleteReservation($id)
+    {
+
+        // Get reservation details to check status before deleting
+        $reservation = $this->reservationRestoranModel->find($id);
+
+        // Check if reservation status allows deletion
+        if ($reservation['status'] == 'Dibatalkan' || $reservation['status'] == 'Berhasil') {
+            // Attempt to delete reservation from the database
+            $deleted = $this->reservationRestoranModel->deleteReservation($id);
+
+            if ($deleted) {
+                // Redirect to reservation list with success message
+                return redirect()->to(base_url('user/pesanan'))->with('success', 'Reservation deleted successfully.');
+            } else {
+                // Handle deletion failure (redirect or show error message)
+                return redirect()->to(base_url('user/pesanan'))->with('error', 'Failed to delete reservation.');
+            }
+        } else {
+            // Reservation status does not allow deletion, handle error
+            return redirect()->to(base_url('user/pesanan'))->with('error', 'Cannot delete reservation with current status.');
+        }
+    }
     #--------------------------------------------------------------------------------------------------------------------
     #global function
     public function rata_rating($rating)

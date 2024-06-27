@@ -27,4 +27,11 @@ class ReservationRestoranModel extends Model
     {
         return $this->where('user_id', $userId)->findAll(); // Find all reservations for a specific user
     }
+
+    public function deleteReservation($id)
+    {
+        // Assuming 'reservasi_restoran' is your table name and 'id' is the primary key
+        $this->where('id', $id);
+        $this->delete();
+    }
 }
