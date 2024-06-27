@@ -106,6 +106,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>Nama Restoran</th>
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Nomor Telepon</th>
@@ -120,6 +121,7 @@
                     <tbody>
                         <?php foreach ($reservasi_restoran as $reservation) : ?>
                             <tr>
+                                <td><?= $reservation['nama_restoran']; ?></td>
                                 <td><?= $reservation['nama']; ?></td>
                                 <td><?= $reservation['email']; ?></td>
                                 <td><?= $reservation['nomortelepon']; ?></td>

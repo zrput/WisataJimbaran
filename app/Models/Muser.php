@@ -187,10 +187,19 @@ class Muser extends Model
             ->where('id_restoran', $id)->get()->getFirstRow();
     }
 
+    // public function detail_restoran($id, $nama)
+    // {
+    //     return $this->db->table('restoran')->where('id_restoran', $id)
+    //         ->where('nama_restoran', $nama)->get()->getResult();
+    // }
+
     public function detail_restoran($id, $nama)
     {
-        return $this->db->table('restoran')->where('id_restoran', $id)
-            ->where('nama_restoran', $nama)->get()->getResult();
+        return $this->db->table('restoran')
+            ->where('id_restoran', $id)
+            ->where('nama_restoran', $nama)
+            ->get()
+            ->getRow(); // Use getRow() to fetch a single result
     }
 
     public function all_img_restoran($id)
