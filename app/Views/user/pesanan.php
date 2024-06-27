@@ -129,10 +129,31 @@
                                 <td><?= $reservation['jam']; ?></td>
                                 <td><?= $reservation['jumlahorang']; ?></td>
                                 <td><?= $reservation['catatan']; ?></td>
-                                <td><?= $reservation['status']; ?></td>
+                                <td style="padding: 8px; text-align: left; 
+                                            <?php
+                                            switch ($reservation['status']) {
+                                                case 'Dibatalkan':
+                                                    echo 'background-color: #f44336; color: white;';
+                                                    break;
+                                                case 'Sedang Diproses':
+                                                    echo 'background-color: #757575; color: white;';
+                                                    break;
+                                                case 'Berhasil':
+                                                    echo 'background-color: #4caf50; color: white;';
+                                                    break;
+                                                default:
+                                                    echo ''; // Default style if none of the above cases match
+                                                    break;
+                                            }
+                                            ?>
+                                        ">
+                                    <?= $reservation['status']; ?>
+                                </td>
                                 <td class="action-buttons">
                                     <?php if ($reservation['status'] == 'Sedang Diproses' || $reservation['status'] == 'Berhasil') : ?>
-                                        <a href="<?= base_url('user/cancelReservation/' . $reservation['id']); ?>">Cancel Reservation</a>
+                                        <form action="<?= base_url('user/cancelReservation/' . $reservation['id']); ?>" method="post">
+                                            <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+                                        </form>
                                     <?php else : ?>
                                         <span><?= $reservation['status']; ?></span>
                                     <?php endif; ?>

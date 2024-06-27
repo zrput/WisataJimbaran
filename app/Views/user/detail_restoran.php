@@ -328,7 +328,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="jumlahorang">Jumlah Orang</label>
-                                                <input type="number" id="jumlahorang" name="jumlahorang" class="form-control" required>
+                                                <input type="number" id="jumlahorang" name="jumlahorang" class="form-control" min="1" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="catatan">Catatan Khusus</label>
@@ -587,6 +587,7 @@
         </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
         <script>
             $(document).ready(function() {
                 $('#ajukanButton').click(function() {
@@ -599,6 +600,12 @@
                     var jumlahorang = $('#jumlahorang').val();
                     var catatan = $('#catatan').val();
                     var nama_restoran = $('#nama_restoran').val();
+
+                    // Validate jumlahorang
+                    if (jumlahorang <= 0) {
+                        alert('Jumlah orang harus lebih dari 0')
+                        return false; //prevent form submission
+                    }
 
                     // Construct summary message
                     var summary = "<strong>Nama:</strong> " + nama + "<br>" +
