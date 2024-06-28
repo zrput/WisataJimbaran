@@ -18,62 +18,62 @@
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
                     <div class="card border border-light-subtle rounded-4">
                         <div class="card-body p-3 p-md-4 p-xl-5">
-                            <button class="btn btn-outline-secondary back-button" onclick="location.href='<?= base_url('Auth') ?>'">
-                                <–< /button>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="mb-5">
-                                                <div class="text-center mb-4">
-                                                    <a href="#!">
-                                                        <img src="../assets/scale.png" alt="Logo" width="130" height="120">
-                                                    </a>
-                                                </div>
-                                                <h4 class="text-center">Password</h4>
-                                            </div>
+                            <button class="btn btn-outline-secondary back-button mb-4" onclick="location.href='<?= base_url('Auth') ?>'">
+                                ←
+                            </button>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-5">
+                                        <div class="text-center mb-4">
+                                            <a href="#!">
+                                                <img src="../assets/scale.png" alt="Logo" width="130" height="120">
+                                            </a>
                                         </div>
+                                        <h4 class="text-center">Password</h4>
                                     </div>
-                                    <?php if (session()->getFlashdata('pesan')) : ?>
-                                        <div class="alert alert-warning" id="sukses" role="alert">
-                                            <button type="button" class="btn btn-warning" onclick="document.getElementById('sukses').remove()">
-                                                x
-                                            </button>
-                                            <?= session()->getFlashdata('pesan'); ?>
-                                        </div>
-                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php if (session()->getFlashdata('pesan')) : ?>
+                                <div class="alert alert-warning" id="sukses" role="alert">
+                                    <button type="button" class="btn-close" onclick="document.getElementById('sukses').remove()"></button>
+                                    <?= session()->getFlashdata('pesan'); ?>
+                                </div>
+                            <?php endif; ?>
 
-                                    <?php echo form_open('Auth/insert_pass') ?>
-                                    <div class="row gy-3 overflow-hidden">
-                                        <div class="col-12">
-                                            <div class="form-floating mb-3">
-                                                <input type="hidden" name="email" value="<?= session()->get('email'); ?>">
-                                                <input type="hidden" name="username" value="<?= session()->get('username'); ?>">
-                                                <input type="hidden" name="picture" value="<?= session()->get('picture'); ?>">
-                                                <input type="password" class="form-control <?php echo session('errors.password') ? 'is-invalid' : '' ?>" name="password" id="password" placeholder="name@example.com" value="<?php echo set_value('password'); ?>">
-                                                <label for="password" class="form-label" name="password">password</label>
-                                                <?php if (session('errors.password')) : ?>
-                                                    <div class="invalid-feedback">
-                                                        <?php echo session('errors.password'); ?>
-                                                    </div>
-                                                <?php endif; ?>
+                            <?php echo form_open('Auth/insert_pass') ?>
+                            <div class="row gy-3 overflow-hidden">
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="hidden" name="email" value="<?= session()->get('email'); ?>">
+                                        <input type="hidden" name="username" value="<?= session()->get('username'); ?>">
+                                        <input type="hidden" name="picture" value="<?= session()->get('picture'); ?>">
+                                        <input type="password" class="form-control <?php echo session('errors.password') ? 'is-invalid' : '' ?>" name="password" id="password" placeholder="Password" value="<?php echo set_value('password'); ?>">
+                                        <label for="password" class="form-label">Password</label>
+                                        <?php if (session('errors.password')) : ?>
+                                            <div class="invalid-feedback">
+                                                <?php echo session('errors.password'); ?>
                                             </div>
-                                            <div class="col-12">
-                                                <div class="d-grid">
-                                                    <button class="btn bsb-btn-xl btn-primary" type="submit">Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php echo form_close(); ?>
+                                        <?php endif; ?>
                                     </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-grid">
+                                        <button class="btn bsb-btn-xl btn-primary" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php echo form_close(); ?>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <script>
-        function destory() {
+        function destroy() {
             var div = document.getElementById("sukses");
-            div.destory();
+            div.remove();
         }
     </script>
 </body>

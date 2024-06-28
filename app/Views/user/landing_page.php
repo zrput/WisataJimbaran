@@ -53,6 +53,10 @@
             height: 100%;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
     </style>
 </head>
 
@@ -99,7 +103,7 @@
 
     
     <!-- How It Works Section Begin -->
-    <section class="howit-works spad">
+    <section class="howit-works spad" id = "tentang">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

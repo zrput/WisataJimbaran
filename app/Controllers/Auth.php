@@ -165,20 +165,25 @@ class Auth extends BaseController
         $token = $this->request->getGet('token');
 
         $user = $this->Madmin->get_pending($email, $token);
-        if (str_replace(' ', '+', $user['token']) == $token) {
-            $insert_pending = [
-                'username' => $user['username'],
-                'email' => $user['email'],
-                'password' => $user['password'],
-                'role' => $user['role']
-            ];
-            $this->Madmin->reg_google($insert_pending);
-
-            $data['pesan'] = 'Verifikasi akun berhasil! Akun anda sudah aktif.';
-            return view('alert_verifikasi', $data);
-        } else {
-            $data['pesan'] = 'Verifikasi akun gagal! Token tidak sesuai.';
-            return view('alert_verifikasi', $data);
+        if ($user) {
+            if (str_replace(' ', '+', $user['token']) == $token) {
+                $insert_pending = [
+                    'username' => $user['username'],
+                    'email' => $user['email'],
+                    'password' => $user['password'],
+                    'role' => $user['role']
+                ];
+                $this->Madmin->reg_google($insert_pending);
+                $this->Madmin->delete_pending($user['id']);
+    
+                $data['pesan'] = 'berhasil verifikasi';
+                return view('alert_verifikasi', $data);
+            } else {
+                $data['pesan'] = 'gagal verifikasi';
+                return view('alert_verifikasi', $data);
+            }
+        }else {
+            return view('404');
         }
     }
 
@@ -343,12 +348,16 @@ class Auth extends BaseController
         $token = $this->request->getGet('token');
 
         $user = $this->Madmin->get_token($email, $token);
-        if (str_replace(' ', '+', $user['token']) == $token) {
-            session()->set('reset_password', $email);
-            return view('changepassword');
-        } else {
-            session()->setFlashdata('pesan', 'Reset Password Gagal, Token salah !!');
-            return redirect()->to(base_url('Auth'));
+        if ($user){
+            if (str_replace(' ', '+', $user['token']) == $token) {
+                session()->set('reset_password', $email);
+                return view('changepassword');
+            } else {
+                session()->setFlashdata('pesan', 'Reset Password Gagal, Token salah !!');
+                return redirect()->to(base_url('Auth'));
+            }
+        }else {
+            return view('404');
         }
     }
 

@@ -13,7 +13,7 @@
 
           <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
             <li><a href="<?= base_url('User') ?>" class="nav-link">Utama</a></li>
-            <li><a href="#services-section" class="nav-link">Tentang</a></li>
+            <li><a href="#tentang" class="nav-link">Tentang</a></li>
 
 
             <li class="has-children">

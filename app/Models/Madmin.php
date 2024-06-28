@@ -55,4 +55,8 @@ class Madmin extends Model
     {
         return $this->db->table('user_pending')->where(['email' => $email, 'token' => $token])->get()->getRowArray();
     }
+
+    public function delete_pending($id){
+        return $this->db->table('user_pending')->where('id', $id)->delete();
+    }
 }
