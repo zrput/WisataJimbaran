@@ -106,6 +106,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>Nama Restoran</th>
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Nomor Telepon</th>
@@ -120,6 +121,7 @@
                     <tbody>
                         <?php foreach ($reservasi_restoran as $reservation) : ?>
                             <tr>
+                                <td><?= $reservation['nama_restoran']; ?></td>
                                 <td><?= $reservation['nama']; ?></td>
                                 <td><?= $reservation['email']; ?></td>
                                 <td><?= $reservation['nomortelepon']; ?></td>
@@ -127,12 +129,39 @@
                                 <td><?= $reservation['jam']; ?></td>
                                 <td><?= $reservation['jumlahorang']; ?></td>
                                 <td><?= $reservation['catatan']; ?></td>
-                                <td><?= $reservation['status']; ?></td>
+                                <td style="padding: 8px; text-align: left; 
+                                            <?php
+                                            switch ($reservation['status']) {
+                                                case 'Dibatalkan':
+                                                    echo 'background-color: #f44336; color: white;';
+                                                    break;
+                                                case 'Sedang Diproses':
+                                                    echo 'background-color: #757575; color: white;';
+                                                    break;
+                                                case 'Berhasil':
+                                                    echo 'background-color: #4caf50; color: white;';
+                                                    break;
+                                                default:
+                                                    echo ''; // Default style if none of the above cases match
+                                                    break;
+                                            }
+                                            ?>
+                                        ">
+                                    <?= $reservation['status']; ?>
+                                </td>
                                 <td class="action-buttons">
+                                    <!-- Cancel Button -->
                                     <?php if ($reservation['status'] == 'Sedang Diproses' || $reservation['status'] == 'Berhasil') : ?>
-                                        <a href="<?= base_url('user/cancelReservation/' . $reservation['id']); ?>">Cancel Reservation</a>
-                                    <?php else : ?>
-                                        <span><?= $reservation['status']; ?></span>
+                                        <form action="<?= base_url('user/cancelReservation/' . $reservation['id']); ?>" method="post">
+                                            <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+                                        </form>
+                                    <?php endif; ?>
+                                    <br> <!-- Add line break for spacing -->
+                                    <!-- Delete Button -->
+                                    <?php if ($reservation['status'] == 'Dibatalkan' || $reservation['status'] == 'Berhasil') : ?>
+                                        <form action="<?= base_url('user/deleteReservation/' . $reservation['id']); ?>" method="post">
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this reservation?')">Delete</button>
+                                        </form>
                                     <?php endif; ?>
                                 </td>
                             </tr>

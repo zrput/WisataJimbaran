@@ -153,8 +153,8 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">
                     <div class="pd-hero-text">
-                        <p class="room-location" style="text-align:center; margin:auto; color: white;"><i class="icon_pin"></i> <?= $data[0]->alamat; ?></p>
-                        <h2><?= $data[0]->nama_restoran; ?></h2>
+                        <p class="room-location" style="text-align:center; margin:auto; color: white;"><i class="icon_pin"></i> <?= $data->alamat; ?></p>
+                        <h2><?= $data->nama_restoran; ?></h2>
 
                     </div>
                 </div>
@@ -193,7 +193,7 @@
 
                         <div class="pd-desc">
                             <h4>Deskripsi</h4>
-                            <p><?= $data[0]->deskripsi; ?></p>
+                            <p><?= $data->deskripsi; ?></p>
                         </div>
                         <div class="pd-details-tab">
                             <div class="tab-item">
@@ -214,11 +214,11 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="pt-name">Jam Buka</td>
-                                                        <td class="p-value"><?= $data[0]->jam_buka; ?></td>
+                                                        <td class="p-value"><?= $data->jam_buka; ?></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="pt-name">Telepon</td>
-                                                        <td class="p-value"><?= $data[0]->telepon; ?></td>
+                                                        <td class="p-value"><?= $data->telepon; ?></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -328,11 +328,15 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="jumlahorang">Jumlah Orang</label>
-                                                <input type="number" id="jumlahorang" name="jumlahorang" class="form-control" required>
+                                                <input type="number" id="jumlahorang" name="jumlahorang" class="form-control" min="1" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="catatan">Catatan Khusus</label>
                                                 <textarea id="catatan" name="catatan" class="form-control" rows="3"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nama_restoran">Nama Restoran</label>
+                                                <input type="text" id="nama_restoran" name="nama_restoran" class="form-control" value="<?= $data->nama_restoran ?>" readonly>
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-primary mr-3" id="ajukanButton">Ajukan</button>
@@ -363,10 +367,11 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="property-map">
                             <h4>Lokasi Berdasarkan Map</h4>
                             <div class="map-inside">
-                                <iframe src="<?= $data[0]->peta; ?>" height="320" style="border:0;" allowfullscreen=""></iframe>
+                                <iframe src="<?= $data->peta; ?>" height="320" style="border:0;" allowfullscreen=""></iframe>
 
                             </div>
                         </div>
@@ -403,8 +408,8 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <input type="hidden" class="form-control" name="id" value="<?= session('id') ?>">
-                                                            <input type="hidden" class="form-control" name="jenis" value="<?= $data[0]->id_restoran ?>">
-                                                            <input type="hidden" class="form-control" name="nama" value="<?= $data[0]->nama_restoran ?>">
+                                                            <input type="hidden" class="form-control" name="jenis" value="<?= $data->id_restoran ?>">
+                                                            <input type="hidden" class="form-control" name="nama" value="<?= $data->nama_restoran ?>">
                                                             <input type="hidden" class="form-control" name="tipe" value="restoran">
                                                             <textarea class="form-control" id="commentTextarea" name="komentar" style="width: 840px; height: 180px;" rows="3" placeholder="Write your comment here..." required></textarea>
                                                             <!-- Alert for Required Comment -->
@@ -582,6 +587,7 @@
         </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
         <script>
             $(document).ready(function() {
                 $('#ajukanButton').click(function() {
@@ -593,6 +599,13 @@
                     var jam = $('#jam').val();
                     var jumlahorang = $('#jumlahorang').val();
                     var catatan = $('#catatan').val();
+                    var nama_restoran = $('#nama_restoran').val();
+
+                    // Validate jumlahorang
+                    if (jumlahorang <= 0) {
+                        alert('Jumlah orang harus lebih dari 0')
+                        return false; //prevent form submission
+                    }
 
                     // Construct summary message
                     var summary = "<strong>Nama:</strong> " + nama + "<br>" +
@@ -601,7 +614,8 @@
                         "<strong>Tanggal:</strong> " + tanggal + "<br>" +
                         "<strong>Jam:</strong> " + jam + "<br>" +
                         "<strong>Jumlah Orang:</strong> " + jumlahorang + "<br>" +
-                        "<strong>Catatan:</strong> " + catatan;
+                        "<strong>Catatan:</strong> " + catatan + "<br>" +
+                        "<strong>Nama Restoran:</strong> " + nama_restoran;
 
                     // Display summary in summary modal body
                     $('#summaryModalBody').html(summary);

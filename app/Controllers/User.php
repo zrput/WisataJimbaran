@@ -303,10 +303,37 @@ class User extends BaseController
         return view('user/restoran', $data);
     }
 
+    // public function detail_restoran($id, $nama)
+    // {
+    //     $tipe = "restoran";
+    //     $data['data'] = $this->user_model->detail_restoran($id, $nama);
+    //     $data['img'] = $this->user_model->all_img_restoran($id);
+    //     $data['imgs'] = $this->user_model->img_restoran($id);
+    //     $data['komentar'] = $this->user_model->get_komentar_restoran($id, $tipe);
+    //     $data['menu'] = $this->user_model->data_menu($id);
+
+    //     $data['title'] = "Restoran";
+    //     $data['header'] = view('user/header');
+    //     $data['footer'] = view('user/footer');
+
+    //     $data['rata'] = $this->rata_rating($data['komentar']);
+    //     $data['bar'] = $this->count_bar($data['komentar']);
+    //     // var_dump($data['menu']);
+    //     // die();
+    //     return view('user/detail_restoran', $data);
+    // }
+
+    // In User.php (Controller)
     public function detail_restoran($id, $nama)
     {
         $tipe = "restoran";
-        $data['data'] = $this->user_model->detail_restoran($id, $nama);
+        $data['restoran'] = $this->user_model->detail_restoran($id, $nama);
+
+        if (!$data['restoran']) {
+            // Handle case where no restaurant is found
+            return redirect()->to(base_url('somewhere'))->with('error', 'Restaurant not found.');
+        }
+
         $data['img'] = $this->user_model->all_img_restoran($id);
         $data['imgs'] = $this->user_model->img_restoran($id);
         $data['komentar'] = $this->user_model->get_komentar_restoran($id, $tipe);
@@ -318,8 +345,14 @@ class User extends BaseController
 
         $data['rata'] = $this->rata_rating($data['komentar']);
         $data['bar'] = $this->count_bar($data['komentar']);
-        // var_dump($data['menu']);
-        // die();
+
+        // Pass id_restoran and nama_restoran to the view
+        $data['id_restoran'] = $data['restoran']->id_restoran;
+        $data['nama_restoran'] = $data['restoran']->nama_restoran;
+
+        // Pass the entire restoran data to the view
+        $data['data'] = $data['restoran'];
+
         return view('user/detail_restoran', $data);
     }
 
@@ -362,6 +395,7 @@ class User extends BaseController
         $jam = $this->request->getPost('jam');
         $jumlahorang = $this->request->getPost('jumlahorang'); // Note: Ensure consistency with form input name
         $catatan = $this->request->getPost('catatan');
+        $nama_restoran = $this->request->getPost('nama_restoran'); // Capture the restaurant name
 
         // Prepare data for insertion
         $data = [
@@ -372,7 +406,8 @@ class User extends BaseController
             'jam' => $jam,
             'jumlahorang' => $jumlahorang,
             'catatan' => $catatan,
-            'user_id' => $userId // Associate reservation with the current user ID
+            'user_id' => $userId, // Associate reservation with the current user ID
+            'nama_restoran' => $nama_restoran // Save the restaurant name
         ];
 
         // Insert into database using ReservationModel
@@ -391,6 +426,29 @@ class User extends BaseController
         return view('user/reservation_table_success');
     }
 
+    public function deleteReservation($id)
+    {
+
+        // Get reservation details to check status before deleting
+        $reservation = $this->reservationRestoranModel->find($id);
+
+        // Check if reservation status allows deletion
+        if ($reservation['status'] == 'Dibatalkan' || $reservation['status'] == 'Berhasil') {
+            // Attempt to delete reservation from the database
+            $deleted = $this->reservationRestoranModel->deleteReservation($id);
+
+            if ($deleted) {
+                // Redirect to reservation list with success message
+                return redirect()->to(base_url('user/pesanan'))->with('success', 'Reservation deleted successfully.');
+            } else {
+                // Handle deletion failure (redirect or show error message)
+                return redirect()->to(base_url('user/pesanan'))->with('error', 'Failed to delete reservation.');
+            }
+        } else {
+            // Reservation status does not allow deletion, handle error
+            return redirect()->to(base_url('user/pesanan'))->with('error', 'Cannot delete reservation with current status.');
+        }
+    }
     #--------------------------------------------------------------------------------------------------------------------
     #global function
     public function rata_rating($rating)
