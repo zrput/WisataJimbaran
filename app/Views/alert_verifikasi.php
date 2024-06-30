@@ -65,7 +65,7 @@
                                     </div>
                                     <?php endif; ?>
                                     <div class="mb-4">
-                                        <a href="<?= base_url('User') ?>" class="btn btn-primary">Go to Homepage</a>
+                                        <a href="<?= base_url('Auth') ?>" class="btn btn-primary">Go to Loginpage</a>
                                     </div>
                                 </div>
                             </div>

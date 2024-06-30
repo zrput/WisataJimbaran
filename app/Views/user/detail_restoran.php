@@ -287,6 +287,10 @@
                             <?php if (session('username') && session('role') === 'member') : ?>
                                 <!-- Content accessible to logged-in users with role 'member' -->
                                 <button id="reserveButton" class="btn btn-primary btn-lg btn-block font-weight-bold" data-toggle="modal" data-target="#reserveModal" style="margin: 0 auto; display: block; width: auto;">Ajukan Reservasi Meja</button>
+                            <?php elseif (session('role') === 'akomodasi' || session('role') === 'restoran') : ?>
+                                <div class="alert alert-warning" role="alert">
+                                    Fitur pemesanan meja hanya untuk Member!.
+                                </div>
                             <?php else : ?>
                                 <div class="alert alert-warning" role="alert">
                                     Jika ingin menggunakan fitur reservasi meja, wajib login terlebih dahulu.
@@ -380,7 +384,7 @@
                             <div class="row">
                                 <div class="col-lg-12 ">
                                     <div class="leave-comment">
-                                        <?php if (session('username')) : ?>
+                                        <?php if (session('username') && session('role') === 'member') : ?>
                                             <form id="commentForm" action="<?= base_url('User/data_review_restoran') ?>" method="post">
                                                 <div class="row">
                                                     <div class="col-lg-2">
@@ -423,9 +427,15 @@
                                                 </div>
                                             </form>
                                         <?php else : ?>
-                                            <div class="alert alert-warning" role="alert">
-                                                Jika ingin menggunakan fitur komentar, wajib login terlebih dahulu.
-                                            </div>
+                                            <?php if (session('role') === 'akomodasi' || session('role') === 'restoran') : ?>
+                                                <div class="alert alert-warning" role="alert">
+                                                    Fitur komentar hanya untuk member!.
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="alert alert-warning" role="alert">
+                                                    Jika ingin menggunakan fitur komentar, wajib login terlebih dahulu.
+                                                </div>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     </div>
                                 </div>

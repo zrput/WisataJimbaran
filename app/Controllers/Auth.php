@@ -63,8 +63,8 @@ class Auth extends BaseController
 
                 if ($cek['role'] == 'admin') {
                     return redirect()->to(base_url('Admin/dashboard'));
-                } elseif ($cek['role'] == 'akomodasi') {
-                    return redirect()->to(base_url('Main_akomodasi'));
+                } elseif ($cek['role'] == 'akomodasi' || $cek['role'] == 'restoran') {
+                    return redirect()->to(base_url('Main_company'));
                 } else {
                     return redirect()->to(base_url('User'));
                 }
@@ -265,9 +265,7 @@ class Auth extends BaseController
 
     public function logout()
     {
-        session()->remove('log');
-        session()->remove('username');
-        session()->remove('email');
+        session()->destroy();
 
         session()->setFlashdata('pesan', 'Logout Berhasil....!');
         return redirect()->to(base_url('Auth'));
