@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <!-- Nav Pills -->
-                            <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+                            <ul class="nav nav-tabs mb-3 justify-content-center" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link <?= session('tab') == 'login' ? 'active' : '' ?>" id="pills-login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab" aria-controls="pills-login" aria-selected="<?= session('tab') == 'login' ? 'true' : 'false' ?>">Login</button>
                                 </li>
@@ -221,6 +221,15 @@
     </section>
     <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var linkElement = document.getElementById('already-account-link');
+            var loginTab = document.getElementById('pills-login-tab');
+            
+            if (linkElement && loginTab) {
+                loginTab.click();
+            }
+        });
+
         document.getElementById('already-account-link').addEventListener('click', function() {
             document.getElementById('pills-login-tab').click();
         });
