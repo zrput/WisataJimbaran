@@ -10,12 +10,11 @@
 </head>
 
 <body>
-    <?= $this->include('company/sidebar')?>
+    <?= $this->include('company/sidebar') ?>
     <div class="content">
         <div class="header">
             <h1>Dashboard</h1>
         </div>
-        <br>
         <div class="container">
             <div class="row">
                 <?php if (session('role') === 'restoran') : ?>

@@ -9,7 +9,7 @@ class Makomodasi extends Model{
     protected $primaryKey = 'id_penginapan';
     protected $returnType = 'object';
     protected $allowedFields = ['nama_penginapan','tipe_penginapan', 'alamat', 'min', 'email','telepon', 
-    'peta', 'deskripsi', 'check_in', 'check_out'];
+    'peta', 'deskripsi', 'check_in', 'check_out', 'id_user'];
 
     public function insert_data($data){
         return $this->insert($data);
@@ -52,6 +52,18 @@ class Makomodasi extends Model{
 
     public function delete_img($id){
         return $this->db->table('gambar_akomodasi')->where('id_penginapan', $id)->delete();
+    }
+
+    public function get_company($id){
+        return $this->select('*')->where('id_user', $id)->get()->getRow();
+    }
+
+    public function get_check_company($id_user){
+        return $this->where('id_user', $id_user)->first();
+    }
+
+    public function update_company($id_user, $data){
+        return $this->where('id_user', $id_user)->set($data)->update();
     }
 
 

@@ -31,7 +31,11 @@
               <!-- Jika user sudah login -->
               <li class="has-children">
                 <a href="#about-section" class="nav-link">
-                  <img src="<?= base_url('uploads/profile_pictures/' . session('picture')) ?>" alt="User" class="rounded-circle" width="30" height="30">
+                  <?php if (strpos(session('picture'), 'https') !== false) :?>
+                      <img src="<?= session('picture')?>" alt="test" class="rounded-circle" width="30" height="30">
+                    <?php else :?>
+                      <img src="<?= base_url('uploads/profile_pictures/' . session('picture')) ?>" alt="User" class="rounded-circle" width="30" height="30">
+                  <?php endif;?>
                 </a>
                 <ul class="dropdown arrow-top" style="max-width: 150px;">
                   <li><a href="<?= base_url('Auth/profileSettings') ?>" class="nav-link">Pengaturan</a></li>

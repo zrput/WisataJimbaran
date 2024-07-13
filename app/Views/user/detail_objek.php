@@ -234,7 +234,11 @@
                             <div class="row">
                                 <div class="col-lg-2">
                                     <div class="profile-logo">
-                                        <img src="<?= session('picture') ?>" alt="Profile Picture" class="img-fluid rounded-circle">
+                                        <?php if (strpos(session('picture'), 'https') !== false) : ?>
+                                            <img src="<?= session('picture') ?>" alt="test" class="rounded-circle" width="30" height="30">
+                                        <?php else : ?>
+                                            <img src="<?= base_url('uploads/profile_pictures/' . session('picture')) ?>" alt="User" class="rounded-circle" width="30" height="30">
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="col-lg-10">
@@ -332,7 +336,11 @@
                     <?php foreach ($komentar as $commentIndex => $comment) : ?>
                         <div class="single-comment-item">
                             <div class="sc-author">
-                                <img src="<?= $comment->picture ?>" alt="">
+                                <?php if (strpos($comment->picture, 'https') !== false) : ?>
+                                    <img src="<?= $comment->picture ?>" alt="User" class="rounded-circle" width="80" height="80">
+                                <?php else : ?>
+                                    <img src="<?= base_url('uploads/profile_pictures/' . $comment->picture) ?>" alt="User" class="rounded-circle" width="80" height="80">
+                                <?php endif; ?>
                             </div>
                             <div class="sc-text">
                                 <span class="d-flex align-items-center">
@@ -360,7 +368,7 @@
     <!-- Partner Carousel Section End -->
 
     <!-- Footer Section Begin -->
-    <footer class="footer-section set-bg" data-setbg="../../../assets/user/img/footer-bg.jpg">
+    <footer class="footer-section set-bg" data-setbg="../../../assets/user/img/footer.png">
         <?= $footer; ?>
         <!-- Footer Section End -->
 

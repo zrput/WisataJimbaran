@@ -131,14 +131,14 @@
                                 <td><?= $reservation['catatan']; ?></td>
                                 <td style="padding: 8px; text-align: left; 
                                             <?php
-                                            switch ($reservation['status']) {
-                                                case 'Dibatalkan':
+                                            switch ($reservation['transaction_status']) {
+                                                case 'Cancelled':
                                                     echo 'background-color: #f44336; color: white;';
                                                     break;
-                                                case 'Sedang Diproses':
+                                                case 'Pending':
                                                     echo 'background-color: #757575; color: white;';
                                                     break;
-                                                case 'Berhasil':
+                                                case 'Settlement':
                                                     echo 'background-color: #4caf50; color: white;';
                                                     break;
                                                 default:
@@ -147,18 +147,18 @@
                                             }
                                             ?>
                                         ">
-                                    <?= $reservation['status']; ?>
+                                    <?= $reservation['transaction_status']; ?>
                                 </td>
                                 <td class="action-buttons">
                                     <!-- Cancel Button -->
-                                    <?php if ($reservation['status'] == 'Sedang Diproses' || $reservation['status'] == 'Berhasil') : ?>
+                                    <?php if ($reservation['transaction_status'] == 'Pending' || $reservation['transaction_status'] == 'Settlement') : ?>
                                         <form action="<?= base_url('user/cancelReservation/' . $reservation['id']); ?>" method="post">
                                             <button type="submit" class="btn btn-danger">Cancel Reservation</button>
                                         </form>
                                     <?php endif; ?>
                                     <br> <!-- Add line break for spacing -->
                                     <!-- Delete Button -->
-                                    <?php if ($reservation['status'] == 'Dibatalkan' || $reservation['status'] == 'Berhasil') : ?>
+                                    <?php if ($reservation['transaction_status'] == 'Cancelled' || $reservation['transaction_status'] == 'Settlement') : ?>
                                         <form action="<?= base_url('user/deleteReservation/' . $reservation['id']); ?>" method="post">
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this reservation?')">Delete</button>
                                         </form>
