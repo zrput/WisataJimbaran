@@ -15,12 +15,12 @@
         </div>
         <?php if (session('role') === 'akomodasi') : ?>
             <a href="<?= base_url('Main_company') ?>" class="<?= ($page == 'dashboard') ? 'active' : '' ?>">Dashboard</a>
-            <a href="<?= base_url('Main_company/detail_company') ?>" class="<?= ($page == 'update-data') ? 'active' : '' ?>">Update Data</a>
+            <a href="<?= base_url('Main_company/form_company') ?>" class="<?= ($page == 'update-data') ? 'active' : '' ?>">Update Data</a>
             <a href="#">Reports</a>
         <?php elseif (session('role') === 'restoran') : ?>
             <a href="<?= base_url('Main_company') ?>" class="<?= ($page == 'dashboard') ? 'active' : '' ?>">Dashboard</a>
-            <a href="<?= base_url('Main_company/detail_company') ?>" class="<?= ($page == 'update-data') ? 'active' : '' ?>">Update Data</a>
-            <a href="<?= base_url('Main_company/reservation') ?>" class="<?= ($page == 'reservation') ? 'active' : '' ?>">Reservation</a>
+            <a href="<?= base_url('Main_company/form_company/') ?>" class="<?= ($page == 'update-data') ? 'active' : '' ?>">Update Data</a>
+            <a href="<?= base_url('Main_company/reservation/3') ?>" class="<?= ($page == 'reservation') ? 'active' : '' ?>">Reservation</a>
             <a href="#">Reports</a>
         <?php endif; ?>
     </div>

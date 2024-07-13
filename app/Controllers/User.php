@@ -353,6 +353,21 @@ class User extends BaseController
         // Pass the entire restoran data to the view
         $data['data'] = $data['restoran'];
 
+        // Hitung sisa orang reservasi yang bisa ditampung restoran
+        $data['person'] = $this->reservationRestoranModel->getperson($id, $nama);
+
+        $totalperson = 0;
+
+        foreach ($data['person'] as $person) {
+            $totalperson += $person->jumlahorang;
+        }
+        $data['totalperson'] = $totalperson;
+        $data['aviperson'] = $data['restoran']->max_person - $totalperson;
+
+        // echo "<pre>";
+        // print_r($data['aviperson']);
+        // echo "</pre>";
+        // die;
         return view('user/detail_restoran', $data);
     }
 
@@ -377,25 +392,20 @@ class User extends BaseController
         return redirect()->to(base_url('User/detail_restoran') . '/' . $jenis . '/' . $nama);
     }
 
-    public function reserve_table()
+    public function paymidtrans()
     {
-        // Ensure the user is logged in
-        if (!session()->has('id')) {
-            return redirect()->to(base_url('Auth')); // Redirect to login page if user is not logged in
-        }
 
-        // Get user ID from session
         $userId = session()->get('id');
 
-        // Retrieve form data
         $nama = $this->request->getPost('nama');
         $email = $this->request->getPost('email');
         $nomortelepon = $this->request->getPost('nomortelepon');
         $tanggal = $this->request->getPost('tanggal');
         $jam = $this->request->getPost('jam');
-        $jumlahorang = $this->request->getPost('jumlahorang'); // Note: Ensure consistency with form input name
+        $jumlahorang = $this->request->getPost('jumlahorang');
         $catatan = $this->request->getPost('catatan');
-        $nama_restoran = $this->request->getPost('nama_restoran'); // Capture the restaurant name
+        $id_restoran = $this->request->getPost('id_restoran');
+        $nama_restoran = $this->request->getPost('nama_restoran');
 
         // Prepare data for insertion
         $data = [
@@ -406,25 +416,170 @@ class User extends BaseController
             'jam' => $jam,
             'jumlahorang' => $jumlahorang,
             'catatan' => $catatan,
-            'user_id' => $userId, // Associate reservation with the current user ID
-            'nama_restoran' => $nama_restoran // Save the restaurant name
+            'user_id' => $userId,
+            'nama_restoran' => $nama_restoran,
+            'id_restoran' => $id_restoran,
         ];
 
-        // Insert into database using ReservationModel
+        $username = session('username');
+        $usertlp = $nomortelepon;
+
+        // Set your Merchant Server Key
+        \Midtrans\Config::$serverKey = getenv('serverKey');
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+
+        $items = [
+            [
+                'id' => 'item1',
+                'price' => 20000,
+                'quantity' => 1,
+                'name' => "reservasi meja untuk $jumlahorang orang"
+            ]
+        ];
+
+        // Populate customer's info
+        $customer_details = array(
+            'first_name' => $nama,
+            'email' => $email,
+            'address' => "Karet Belakang 15A, Setiabudi",
+            'phone' => $nomortelepon,
+        );
+        $order_id = uniqid('order-');
+        // $gross_amount = 1000 * $jumlahorang; 
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => $order_id,
+                'gross_amount' => 0,
+
+            ),
+            'item_details' => $items,
+            'customer_details' => $customer_details
+        );
+
+        try {
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $json = [
+                'nama' => $nama,
+                'email' => $email,
+                'nomortelepon' => $nomortelepon,
+                'tanggal' => $tanggal,
+                'jam' => $jam,
+                'jumlahorang' => $jumlahorang,
+                'catatan' => $catatan,
+                'user_id' => $userId,
+                'nama_restoran' => $nama_restoran,
+                'id_restoran' => $id_restoran,
+                'snapToken' => $snapToken,
+            ];
+            echo json_encode($json);
+        } catch (\Exception $e) {
+            // Handle errors gracefully
+            return $this->response->setStatusCode(500)->setJSON(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function finishmidtrans()
+    {
+
+        $nama = $this->request->getPost('nama');
+        $email = $this->request->getPost('email');
+        $nomortelepon = $this->request->getPost('nomortelepon');
+        $tanggal = $this->request->getPost('tanggal');
+        $jam = $this->request->getPost('jam');
+        $jumlahorang = $this->request->getPost('jumlahorang');
+        $catatan = $this->request->getPost('catatan');
+        $id_restoran = $this->request->getPost('id_restoran');
+        $nama_restoran = $this->request->getPost('nama_restoran');
+        $user_id = $this->request->getPost('user_id');
+        $order_id = $this->request->getPost('order_id');
+        $payment_type = $this->request->getPost('payment_type');
+        $transaction_status = $this->request->getPost('transaction_status');
+
+        $data = [
+            'nama' => $nama,
+            'email' => $email,
+            'nomortelepon' => $nomortelepon,
+            'tanggal' => $tanggal,
+            'jam' => $jam,
+            'jumlahorang' => $jumlahorang,
+            'catatan' => $catatan,
+            'user_id' => $user_id,
+            'nama_restoran' => $nama_restoran,
+            'id_restoran' => $id_restoran,
+            'order_id' => $order_id,
+            'payment_type' => $payment_type,
+            'transaction_status' => $transaction_status,
+        ];
+
         $inserted = $this->reservationRestoranModel->insert_reservation($data);
 
         if ($inserted) {
-            // Optionally, you can redirect to a success page
-            return redirect()->to(base_url('user/reserve_table_success'));
+            $json = [
+                'sukses' => 'Transaksi Berhasil, silahkan melakukan pembayaran !!'
+            ];
+            echo json_encode($json);
+            
         } else {
-            // Handle insertion failure (e.g., redirect back with error message)
-            return redirect()->back()->withInput()->with('error', 'Failed to make reservation. Please try again.');
+            $json = [
+                'sukses' => 'Transaksi Gagal, terjadi kesalahan dalam database!!'
+            ];
+            echo json_encode($json);
         }
     }
-    public function reserve_table_success()
-    {
-        return view('user/reservation_table_success');
-    }
+
+    // public function reserve_table()
+    // {
+    //     // Ensure the user is logged in
+    //     if (!session()->has('id')) {
+    //         return redirect()->to(base_url('Auth')); // Redirect to login page if user is not logged in
+    //     }
+
+    //     // Get user ID from session
+    //     $userId = session()->get('id');
+
+    //     // Retrieve form data
+    //     $nama = $this->request->getPost('nama');
+    //     $email = $this->request->getPost('email');
+    //     $nomortelepon = $this->request->getPost('nomortelepon');
+    //     $tanggal = $this->request->getPost('tangga  l');
+    //     $jam = $this->request->getPost('jam');
+    //     $jumlahorang = $this->request->getPost('jumlahorang'); // Note: Ensure consistency with form input name
+    //     $catatan = $this->request->getPost('catatan');
+    //     $id_restoran = $this->request->getPost('id_restoran');
+    //     $nama_restoran = $this->request->getPost('nama_restoran'); // Capture the restaurant name
+
+    //     // Prepare data for insertion
+    //     $data = [
+    //         'nama' => $nama,
+    //         'email' => $email,
+    //         'nomortelepon' => $nomortelepon,
+    //         'tanggal' => $tanggal,
+    //         'jam' => $jam,
+    //         'jumlahorang' => $jumlahorang,
+    //         'catatan' => $catatan,
+    //         'user_id' => $userId, // Associate reservation with the current user ID
+    //         'nama_restoran' => $nama_restoran, // Save the restaurant name
+    //         'id_restoran' => $id_restoran
+    //     ];
+
+    //     // Insert into database using ReservationModel
+    //     $inserted = $this->reservationRestoranModel->insert_reservation($data);
+
+    //     if ($inserted) {
+    //         // Optionally, you can redirect to a success page
+    //         return redirect()->to(base_url('user/reserve_table_success'));
+    //     } else {
+    //         // Handle insertion failure (e.g., redirect back with error message)
+    //         return redirect()->back()->withInput()->with('error', 'Failed to make reservation. Please try again.');
+    //     }
+    // }
+    
+    // public function reserve_table_success()
+    // {
+    //     return view('user/reservation_table_success');
+    // }
 
     public function deleteReservation($id)
     {

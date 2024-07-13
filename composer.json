@@ -12,7 +12,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "codeigniter4/framework": "^4.0",
-        "google/apiclient": "^2.14"
+        "google/apiclient": "^2.14",
+        "midtrans/midtrans-php": "^2.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
@@ -35,6 +36,8 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "phpunit"
+        "test": [
+            "phpunit"
+        ]
     }
 }

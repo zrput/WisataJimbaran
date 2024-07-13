@@ -124,20 +124,6 @@ class Auth extends BaseController
                 session()->setFlashdata('pesan', 'Error 500!!');
                 return redirect()->to(base_url('Auth'));
             }
-
-            // $user_data = $this->Madmin->reg_google($data);
-            // $cek = $this->Madmin->login($email, $password);
-
-            // if ($cek) {
-            //     session()->set('log', true);
-            //     session()->set('id', $cek['id']);
-            //     session()->set('username', $cek['username']);
-            //     session()->set('email', $cek['email']);
-            //     session()->set('picture', $cek['picture']);
-            //     session()->set('role', $cek['role']);
-
-            //     return redirect()->to(base_url('User'));
-            // }
         }
     }
 
