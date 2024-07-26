@@ -39,7 +39,7 @@
 
     <div class="content">
         <div class="header">
-            <h1>Dashboard</h1>
+            <h1>Reservation list</h1>
         </div>
         <br>
         <div class="container">
@@ -57,6 +57,7 @@
                                         <th>jam</th>
                                         <th>jumlah orang</th>
                                         <th>Nomor Telepon</th>
+                                        <th>Catatan</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
@@ -69,8 +70,9 @@
                                             <td><?= $datas['nama'] ?></td>
                                             <td><?= date_format(date_create($datas['tanggal']), 'd-M-Y'); ?></td>
                                             <td><?= date_format(date_create($datas['jam']), 'H:i'); ?></td>
-                                            <td><?= $datas['jumlahorang'] ?></td>
+                                            <td class="col-1 text-center"><?= $datas['jumlahorang'] ?></td>
                                             <td><?= $datas['nomortelepon']?></td>
+                                             <td><?= $datas['catatan']?></td>
                                             <td>
                                                 <!-- <button class="btn btn-success btn-action">View</button>
                                                 <button class="btn btn-warning btn-action">Edit</button> -->

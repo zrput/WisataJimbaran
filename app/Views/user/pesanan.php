@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/assets/user/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="/assets/user/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/assets/user/css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 
@@ -33,10 +34,16 @@
             padding: 18px 25px;
             border-radius: 0;
             font-size: 16px;
+            transition: background-color 0.5s;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background-color: #7ac3fa;
+            color: black;
         }
 
         .nav-tabs .nav-link.active {
-            border-bottom: 2px solid #007bff;
+            border-bottom: 2px solid #7ac3fa;
             background-color: transparent;
         }
 
@@ -68,6 +75,7 @@
         .action-buttons a {
             margin-right: 10px;
         }
+        
     </style>
 
 </head>
@@ -81,13 +89,13 @@
     <div class="container mt-5">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#penginapan">Penginapan</a>
+                <a class="nav-link active" data-toggle="tab" href="#penginapan">Penginapan</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#restoran">Restoran</a>
+                <a class="nav-link" data-toggle="tab" href="#restoran">Restoran</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tiket_restoran">Tiket Objek Wisata</a>
+                <a class="nav-link" data-toggle="tab" href="#tiket_objek_wisata">Tiket Objek Wisata</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#tiket_tempat_rekreasi">Tiket Tempat Rekreasi</a>
@@ -97,13 +105,31 @@
         <div class="tab-content mt-4">
             <!-- Penginapan Tab -->
             <div id="penginapan" class="tab-pane fade show active">
-
+                <h4>Reservasi Penginapan</h4>
+                <table id="penginapanTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Nama Penginapan</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Nomor Telepon</th>
+                            <th>Tanggal</th>
+                            <th>Jam</th>
+                            <th>Jumlah Orang</th>
+                            <th>Catatan Khusus</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
             </div>
 
             <!-- Restoran Tab -->
-            <div id="restoran" class="tab-pane fade show active">
+            <div id="restoran" class="tab-pane fade">
                 <h4>Reservasi Restoran</h4>
-                <table class="table">
+                <table id="restoranTable" class="table">
                     <thead>
                         <tr>
                             <th>Nama Restoran</th>
@@ -115,7 +141,6 @@
                             <th>Jumlah Orang</th>
                             <th>Catatan Khusus</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,7 +154,7 @@
                                 <td><?= $reservation['jam']; ?></td>
                                 <td><?= $reservation['jumlahorang']; ?></td>
                                 <td><?= $reservation['catatan']; ?></td>
-                                <td style="padding: 8px; text-align: left; 
+                                <td style="padding: 8px; text-align: left;
                                             <?php
                                             switch ($reservation['transaction_status']) {
                                                 case 'Cancelled':
@@ -145,24 +170,8 @@
                                                     echo ''; // Default style if none of the above cases match
                                                     break;
                                             }
-                                            ?>
-                                        ">
+                                            ?>">
                                     <?= $reservation['transaction_status']; ?>
-                                </td>
-                                <td class="action-buttons">
-                                    <!-- Cancel Button -->
-                                    <?php if ($reservation['transaction_status'] == 'Pending' || $reservation['transaction_status'] == 'Settlement') : ?>
-                                        <form action="<?= base_url('user/cancelReservation/' . $reservation['id']); ?>" method="post">
-                                            <button type="submit" class="btn btn-danger">Cancel Reservation</button>
-                                        </form>
-                                    <?php endif; ?>
-                                    <br> <!-- Add line break for spacing -->
-                                    <!-- Delete Button -->
-                                    <?php if ($reservation['transaction_status'] == 'Cancelled' || $reservation['transaction_status'] == 'Settlement') : ?>
-                                        <form action="<?= base_url('user/deleteReservation/' . $reservation['id']); ?>" method="post">
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this reservation?')">Delete</button>
-                                        </form>
-                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -170,15 +179,50 @@
                 </table>
             </div>
 
-
             <!-- Tiket Objek Wisata Tab -->
             <div id="tiket_objek_wisata" class="tab-pane fade">
-
+                <h4>Reservasi Tiket Objek Wisata</h4>
+                <table id="tiketObjekWisataTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Nama Objek Wisata</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Nomor Telepon</th>
+                            <th>Tanggal</th>
+                            <th>Jam</th>
+                            <th>Jumlah Orang</th>
+                            <th>Catatan Khusus</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
             </div>
 
             <!-- Tiket Tempat Rekreasi Tab -->
             <div id="tiket_tempat_rekreasi" class="tab-pane fade">
-
+                <h4>Reservasi Tiket Tempat Rekreasi</h4>
+                <table id="tiketTempatRekreasiTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Nama Tempat Rekreasi</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Nomor Telepon</th>
+                            <th>Tanggal</th>
+                            <th>Jam</th>
+                            <th>Jumlah Orang</th>
+                            <th>Catatan Khusus</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
             </div>
             <!-- Add more tab content for other sections -->
         </div>
@@ -198,6 +242,25 @@
     <script src="/assets/user/js/jquery-ui.min.js"></script>
     <script src="/assets/user/js/owl.carousel.min.js"></script>
     <script src="/assets/user/js/main.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#penginapanTable').DataTable();
+            $('#restoranTable').DataTable();
+            $('#tiketObjekWisataTable').DataTable();
+            $('#tiketTempatRekreasiTable').DataTable();
+            
+            $('.nav-link').click(function(){
+                setTimeout(() => {
+                    $($.fn.dataTable.tables(true)).DataTable()
+                       .columns.adjust()
+                       .responsive.recalc();
+                }, 200);
+            });
+        });
+    </script>
 
     <script src="/assets/user/nav/js/popper.min.js"></script>
     <script src="/assets/user/nav/js/jquery.sticky.js"></script>

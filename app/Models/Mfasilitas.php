@@ -52,4 +52,14 @@ class Mfasilitas extends Model{
     public function delete_img($id){
         return $this->db->table('gambar_fasilitas')->where('id_fasilitas', $id)->delete();
     }
+
+
+    public function get_fasilitas($id){
+        return $this->where('id_penginapan', $id)->findAll();
+    }
+
+    public function get_fasilitas_company($id){
+        return $this->select('*')->where('id_penginapan', $id)->get()->getResult();;
+    }
+
 }

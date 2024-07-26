@@ -9,7 +9,7 @@ class Mrestoran extends Model
     protected $table = 'restoran';
     protected $primaryKey = 'id_restoran';
     protected $returnType = 'object';
-    protected $allowedFields = ['nama_restoran', 'alamat', 'jam_buka', 'telepon', 'peta', 'deskripsi'];
+    protected $allowedFields = ['nama_restoran', 'alamat', 'jam_buka', 'telepon', 'peta', 'deskripsi', 'max_person', 'id_user'];
 
     public function insert_data($data){
         return $this->insert($data);
@@ -53,6 +53,20 @@ class Mrestoran extends Model
 
     public function delete_img($id){
         return $this->db->table('gambar_restoran')->where('id_restoran', $id)->delete();
+    }
+
+
+    #--------------------------------------------------------------------------------------------------------------------
+    public function get_company($id){
+        return $this->select('*')->where('id_user', $id)->get()->getRow();
+    }
+
+    public function get_check_company($id_user){
+        return $this->where('id_user', $id_user)->first();
+    }
+
+    public function update_company($id_user, $data){
+        return $this->where('id_user', $id_user)->set($data)->update();
     }
 
 }

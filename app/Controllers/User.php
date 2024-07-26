@@ -451,7 +451,7 @@ class User extends BaseController
         $params = array(
             'transaction_details' => array(
                 'order_id' => $order_id,
-                'gross_amount' => 0,
+                'gross_amount' => 10000,
 
             ),
             'item_details' => $items,
@@ -528,58 +528,6 @@ class User extends BaseController
             echo json_encode($json);
         }
     }
-
-    // public function reserve_table()
-    // {
-    //     // Ensure the user is logged in
-    //     if (!session()->has('id')) {
-    //         return redirect()->to(base_url('Auth')); // Redirect to login page if user is not logged in
-    //     }
-
-    //     // Get user ID from session
-    //     $userId = session()->get('id');
-
-    //     // Retrieve form data
-    //     $nama = $this->request->getPost('nama');
-    //     $email = $this->request->getPost('email');
-    //     $nomortelepon = $this->request->getPost('nomortelepon');
-    //     $tanggal = $this->request->getPost('tangga  l');
-    //     $jam = $this->request->getPost('jam');
-    //     $jumlahorang = $this->request->getPost('jumlahorang'); // Note: Ensure consistency with form input name
-    //     $catatan = $this->request->getPost('catatan');
-    //     $id_restoran = $this->request->getPost('id_restoran');
-    //     $nama_restoran = $this->request->getPost('nama_restoran'); // Capture the restaurant name
-
-    //     // Prepare data for insertion
-    //     $data = [
-    //         'nama' => $nama,
-    //         'email' => $email,
-    //         'nomortelepon' => $nomortelepon,
-    //         'tanggal' => $tanggal,
-    //         'jam' => $jam,
-    //         'jumlahorang' => $jumlahorang,
-    //         'catatan' => $catatan,
-    //         'user_id' => $userId, // Associate reservation with the current user ID
-    //         'nama_restoran' => $nama_restoran, // Save the restaurant name
-    //         'id_restoran' => $id_restoran
-    //     ];
-
-    //     // Insert into database using ReservationModel
-    //     $inserted = $this->reservationRestoranModel->insert_reservation($data);
-
-    //     if ($inserted) {
-    //         // Optionally, you can redirect to a success page
-    //         return redirect()->to(base_url('user/reserve_table_success'));
-    //     } else {
-    //         // Handle insertion failure (e.g., redirect back with error message)
-    //         return redirect()->back()->withInput()->with('error', 'Failed to make reservation. Please try again.');
-    //     }
-    // }
-    
-    // public function reserve_table_success()
-    // {
-    //     return view('user/reservation_table_success');
-    // }
 
     public function deleteReservation($id)
     {

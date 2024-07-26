@@ -29,4 +29,8 @@ class Mmenu extends Model{
         return $this->where('id_Menu', $id)->delete();
     }
 
+    public function get_menu($id){
+        return $this->where('id_restoran', $id)->findAll();
+    }
+
 }

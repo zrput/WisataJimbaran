@@ -476,7 +476,7 @@
     <!-- Property Details Section End -->
 
     <!-- Footer Section Begin -->
-    <footer class="footer-section set-bg" data-setbg="../../../assets/user/img/footer-bg.jpg">
+    <footer class="footer-section set-bg" data-setbg="../../../assets/user/img/footer.png">
         <?= $footer; ?>
         <!-- Footer Section End -->
 
