@@ -54,6 +54,8 @@ class Makomodasi extends Model{
         return $this->db->table('gambar_akomodasi')->where('id_penginapan', $id)->delete();
     }
 
+
+    #--------------------------------------------------------------------------------------------------------------------
     public function get_company($id){
         return $this->select('*')->where('id_user', $id)->get()->getRow();
     }
@@ -65,6 +67,7 @@ class Makomodasi extends Model{
     public function update_company($id_user, $data){
         return $this->where('id_user', $id_user)->set($data)->update();
     }
+
 
 
 }

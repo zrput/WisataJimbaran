@@ -20,6 +20,22 @@
   <link rel="stylesheet" href="../assets/admin/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <!-- <link rel="shortcut icon" href="images/favicon.png" /> -->
+  <style>
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .card {
+      flex: 1 1 23%;
+      margin: 10px;
+    }
+
+    .card-body {
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -65,77 +81,58 @@
       </div>
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
-
       <?= $sidebar; ?>
-
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
 
           <div class="row">
-            <!-- <div class="col-md-6 grid-margin stretch-card">
-              <div class="card tale-bg">
-                <div class="card-people mt-auto">
-                  <img src="../assets/admin/images/dashboard/people.svg" alt="people">
-                  <div class="weather-info">
-                    <div class="d-flex">
-                      <div>
-                        <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>50<sup>C</sup></h2>
-                      </div>
-                      <div class="ml-2">
-                        <h4 class="location font-weight-normal">Jimbaran</h4>
-                        <h6 class="font-weight-normal">Bali</h6>
-                      </div>
+            <div class="col-md-12 grid-margin transparent">
+              <div class="card-container">
+                <div class="col-md-3 mb-5 stretch-card transparent" onclick="objek()">
+                  <div class="card card-tale">
+                    <div class="card-body">
+                      <p class="mb-4">Objek Wisata</p>
+                      <p class="fs-30 mb-2"><?= $objek ?></p>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div> -->
-            <div class="col-md-12 grid-margin transparent">
-              <div <div class="col-md-3 mb-5 stretch-card transparent" onclick="objek()">
-                <div class="card card-tale">
-                  <div class="card-body">
-                    <p class="mb-4">Objek Wisata</p>
-                    <p class="fs-30 mb-2"><?= $objek ?></p>
+
+                <div class="col-md-3 mb-5 stretch-card transparent" onclick="rekreasi()">
+                  <div class="card card-dark-blue">
+                    <div class="card-body">
+                      <p class="mb-4">Tempat Rekreasi wisata</p>
+                      <p class="fs-30 mb-2"><?= $rekreasi ?></p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-3 mb-5 stretch-card transparent" onclick="rekreasi()">
-                <div class="card card-dark-blue">
-                  <div class="card-body">
-                    <p class="mb-4">Tempat Rekreasi wisata</p>
-                    <p class="fs-30 mb-2"><?= $rekreasi ?></p>
+                <div class="col-md-3 mb-5 stretch-card transparent" onclick="penginapan()">
+                  <div class="card card-light-blue">
+                    <div class="card-body">
+                      <p class="mb-4">Akomodasi Penginapan</p>
+                      <p class="fs-30 mb-2"><?= $akomodasi ?></p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-3 mb-5 stretch-card transparent" onclick="penginapan()">
-                <div class="card card-light-blue">
-                  <div class="card-body">
-                    <p class="mb-4">Akomodasi Penginapan</p>
-                    <p class="fs-30 mb-2"><?= $akomodasi ?></p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3 mb-5 stretch-card transparent" onclick="restoran()">
-                <div class="card card-light-danger">
-                  <div class="card-body">
-                    <p class="mb-4">Restoran</p>
-                    <p class="fs-30 mb-2"><?= $restoran ?></p>
-
+                <div class="col-md-3 mb-5 stretch-card transparent" onclick="restoran()">
+                  <div class="card card-light-danger">
+                    <div class="card-body">
+                      <p class="mb-4">Restoran</p>
+                      <p class="fs-30 mb-2"><?= $restoran ?></p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-md-12 stretch-card grid-margin">
+          <!-- <div class="col-md-12 stretch-card grid-margin">
             <div class="card">
               <div class="card-body">
                 <p class="card-title">Notifications</p>
-                <!-- <ul class="icon-data-list">
+                <ul class="icon-data-list">
                     <li>
                       <div class="d-flex">
                         <img src="images/faces/face1.jpg" alt="user">
@@ -186,10 +183,10 @@
                         </div>
                       </div>
                     </li>
-                  </ul> -->
+                  </ul>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

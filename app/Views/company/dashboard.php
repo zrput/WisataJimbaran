@@ -13,28 +13,28 @@
     <?= $this->include('company/sidebar') ?>
     <div class="content">
         <div class="header">
-            <h1>Dashboard</h1>
+            <h1>Dashboard Penginapan</h1>
         </div>
         <div class="container">
             <div class="row">
                 <?php if (session('role') === 'restoran') : ?>
                     <div class="col-md-4 mb-3">
-                        <a href="<?= base_url('Main_company/detail_company') ?>" class="text-decoration-none">
+                        <a onclick="document.getElementById('dataForm').submit();" class="text-decoration-none">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Update Information</h5>
-                                    <p class="card-text">Some data here...</p>
+                                    <h5 class="card-title">Add & Update Information</h5>
+                                    <p class="card-text">fitur untuk memasukkan data restoran dan menu anda</p>
                                     <button class="btn btn-outline-primary">View Details</button>
                                 </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <a href="<?= base_url('Main_company/reservation') ?>" class="text-decoration-none">
+                    <a href="#" onclick="document.getElementById('reservationForm').submit();" class="text-decoration-none">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Reservation Request</h5>
-                                    <p class="card-text">Some data here...</p>
+                                    <h5 class="card-title">Reservation List</h5>
+                                    <p class="card-text">fitur untuk melihat data reservasi</p>
                                     <button class="btn btn-outline-primary">View Details</button>
                                 </div>
                             </div>
@@ -44,8 +44,8 @@
                         <a href="link3.html" class="text-decoration-none">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Print Report</h5>
-                                    <p class="card-text">Some data here...</p>
+                                    <h5 class="card-title">Print Report Reservation</h5>
+                                    <p class="card-text">fitur untuk melakukan cetak pdf untuk semua data reservasi</p>
                                     <button class="btn btn-outline-primary">View Details</button>
                                 </div>
                             </div>
@@ -53,11 +53,11 @@
                     </div>
                 <?php elseif (session('role') === 'akomodasi') : ?>
                     <div class="col-md-4 mb-3">
-                        <a href="<?= base_url('Main_company/detail_company') ?>" class="text-decoration-none">
+                        <a onclick="document.getElementById('dataForm').submit();" class="text-decoration-none">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Update Information</h5>
-                                    <p class="card-text">Some data here...</p>
+                                    <h5 class="card-title">Add & Update Information</h5>
+                                    <p class="card-text">fitur untuk memasukkan data penginapan dan fasilitas anda</p>
                                     <button class="btn btn-outline-primary">View Details</button>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Print Report</h5>
-                                    <p class="card-text">Some data here...</p>
+                                    <p class="card-text">fitur cetak pdf untuk data rating dan komentar</p>
                                     <button class="btn btn-outline-primary">View Details</button>
                                 </div>
                             </div>

@@ -1,3 +1,7 @@
+<?php
+
+use App\Controllers\PdfController;
+?>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -33,8 +37,8 @@
                 <li class="nav-item"> <a class="nav-link" href="<?= base_url('Aktifitas_rekreasi/table_rekreasi')?>">Aktivitas Rekreasi</a></li>
               </ul>
             </div>
-          <!-- </li>
-          <li class="nav-item">
+          </li>
+          <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
               <i class="icon-contract menu-icon"></i>
               <span class="menu-title">Icons</span>
@@ -71,12 +75,12 @@
                 <li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a></li>
               </ul>
             </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pages/documentation/documentation.html">
-              <i class="icon-paper menu-icon"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
           </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="<?= base_url('PdfController') ?>">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Cetak</span>
+            </a>
+          </li>
         </ul>
       </nav>
