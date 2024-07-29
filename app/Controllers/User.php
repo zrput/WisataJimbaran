@@ -604,10 +604,12 @@ class User extends BaseController
         return $result;
     }
 
-    public function pesanan()
+    public function pesanan($id)
     {
-        // Fetch all reservations from the database
-        $data['reservasi_restoran'] = $this->reservationRestoranModel->findAll();
+        if (!empty($id)){
+            // Fetch all reservations from the database
+            $data['reservasi_restoran'] = $this->reservationRestoranModel->getReservationsByUser($id);
+        }
 
         // Load views with header, footer, and main content
         $data['header'] = view('user/header');

@@ -368,10 +368,29 @@ class Main_company extends BaseController
         } elseif ($role === 'restoran') {
             $existcompany = $this->restoran_model->get_check_company($id);
             $id_restoran = $existcompany->id_restoran;
-            $menu = $this->Mmenu_model->get_menu_company($id_restoran);
+            $menu = $this->menu_model->get_menu_company($id_restoran);
+
+            foreach ($menu as $menus) {
+                if (!empty($menus['gambar_menu'])) {
+                    unlink(ROOTPATH . 'public/Menu/' . $menus['gambar_menu']);
+                }
+                $this->menu_model->delete_data($menus['id_menu']);
+            }
+
+            $namaid = $this->restoran_model->get_nama_img($id_restoran);
+
+            if (!empty($namaid)) {
+                foreach ($namaid as $gambar) {
+                    // Menghapus gambar dari server lokal
+                    unlink(ROOTPATH . 'public/restoran/' . $gambar['gambar_restoran']);
+                }
+            }
+            $this->restoran_model->delete_img($id_restoran);
+            $this->restoran_model->delete_data($id_restoran);
+            return $this->response->setJSON(['success' => true]);
+        } else {
+            return redirect()->to(base_url('Auth'));
         }
-        echo "lho";
-        // return redirect()->to(base_url('Auth'));
     }
 
     function data_menu($id)
@@ -380,7 +399,7 @@ class Main_company extends BaseController
         $data['menu'] = $this->menu_model->get_menu($data['company']->id_restoran);
         $data['page'] = 'update-data';
 
-        $data['page'] = 'fasilitas akomodasi';
+        $data['page'] = 'menu restoran';
         if (session('role') === 'restoran') {
             $data['title'] = 'restoran';
             return view('company/data_menu', $data);
@@ -420,6 +439,7 @@ class Main_company extends BaseController
             if (!empty($existcompany->gambar_menu)) {
                 unlink(ROOTPATH . 'public/Menu/' . $existcompany->gambar_menu);
             }
+
             // Hanya menggunakan elemen pertama dari array file
             $imgs = $files['gambar'];
             if (

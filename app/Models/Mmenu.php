@@ -33,4 +33,8 @@ class Mmenu extends Model{
         return $this->where('id_restoran', $id)->findAll();
     }
 
+    public function get_menu_company($id){
+        return $this->select('*')->where('id_restoran', $id)->get()->getResultArray();;
+    }
+
 }
