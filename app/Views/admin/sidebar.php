@@ -77,7 +77,7 @@ use App\Controllers\PdfController;
             </div>
           </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('PdfController') ?>">
+            <a class="nav-link" href="<?= base_url('PdfController/admin_pdf') ?>">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Cetak</span>
             </a>

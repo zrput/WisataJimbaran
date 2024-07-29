@@ -46,6 +46,6 @@ class ReservationRestoranModel extends Model
 
     public function getReservationsResto($id)
     {
-        return $this->where('id_restoran', $id)->findAll(); // Find all reservations for a specific user
+        return $this->where('id_restoran', $id)->findAll();
     }
 }

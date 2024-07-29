@@ -39,7 +39,7 @@
                 </a>
                 <ul class="dropdown arrow-top">
                   <li><a href="<?= base_url('Auth/profileSettings') ?>" class="nav-link">Pengaturan</a></li>
-                  <li><a href="<?= base_url('User/pesanan') ?>" class="nav-link">Pesanan Saya</a></li>
+                  <li><a href="<?= base_url('User/pesanan/'. session('id')) ?>" class="nav-link">Pesanan Saya</a></li>
                   <li><a href="<?= base_url('Auth/logout') ?>" class="nav-link">Keluar</a></li>
                 </ul>
               </li>

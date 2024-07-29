@@ -19,7 +19,7 @@
     <?php if (session('role') === 'akomodasi') : ?>
         <a href="<?= base_url('Main_company') ?>" class="<?= ($page == 'dashboard') ? 'active' : '' ?>">Dashboard</a>
         <a class="<?= ($page == 'update-data') ? 'active' : '' ?>" onclick="document.getElementById('dataForm').submit();">Add & Update Data</a>
-        <a href="#">Reports</a>
+        <a href="<?= base_url('PdfController/komentar_penginapan_pdf/' . session('id')) ?>">Reports</a>
     <?php elseif (session('role') === 'restoran') : ?>
         <a href="<?= base_url('Main_company') ?>" class="<?= ($page == 'dashboard') ? 'active' : '' ?>">Dashboard</a>
         <a class="<?= ($page == 'update-data') ? 'active' : '' ?>" onclick="document.getElementById('dataForm').submit();">Add & Update Data</a>
